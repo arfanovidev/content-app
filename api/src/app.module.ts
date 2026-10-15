@@ -8,6 +8,8 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { WeatherModule } from './modules/weather/weather.module';
+import { CompletedModule } from './modules/completed/completed.module';
+import { VotesModule } from './modules/votes/votes.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { WeatherModule } from './modules/weather/weather.module';
     AuthModule,
     UploadModule,
     WeatherModule,
+    CompletedModule,
+    VotesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
