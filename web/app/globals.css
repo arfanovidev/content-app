@@ -107,3 +107,36 @@
     text-wrap: balance;
   }
 }
+/* Quill editor overrides */
+.quill-wrapper .ql-toolbar {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-color: var(--border);
+  background-color: var(--muted);
+}
+.quill-wrapper .ql-container {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  border-color: var(--border);
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 300px;
+}
+.quill-wrapper .ql-editor {
+  min-height: 300px;
+}
+.dark .quill-wrapper .ql-toolbar {
+  background-color: var(--muted);
+}
+.dark .quill-wrapper .ql-stroke {
+  stroke: var(--foreground);
+}
+.dark .quill-wrapper .ql-fill {
+  fill: var(--foreground);
+}
+.dark .quill-wrapper .ql-picker {
+  color: var(--foreground);
+}
+.dark .quill-wrapper .ql-editor {
+  color: var(--foreground);
+}
