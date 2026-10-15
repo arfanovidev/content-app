@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DriveModule } from './modules/drive/drive.module';
 import { ContentsModule } from './modules/contents/contents.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ContentsModule } from './modules/contents/contents.module';
     }),
     DriveModule,
     ContentsModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
