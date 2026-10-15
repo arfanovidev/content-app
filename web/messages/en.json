@@ -25,6 +25,13 @@
     "completed": "Completed! Added to favorites",
     "saving": "Saving..."
   },
+  "favorites": {
+    "title": "Your Favorites",
+    "subtitle": "Content you've completed",
+    "empty": "No favorites yet",
+    "emptyHint": "Complete content to add it here",
+    "browse": "Browse content"
+  },
   "common": {
     "loading": "Loading...",
     "retry": "Retry"
