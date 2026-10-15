@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -12,9 +12,10 @@ import type { Content, Category } from '@/types';
 interface ContentCardProps {
   content: Content;
   category?: Category;
+  priority?: boolean;
 }
 
-export function ContentCard({ content, category }: ContentCardProps) {
+export function ContentCard({ content, category, priority }: ContentCardProps) {
   const lang = useLangStore((s) => s.lang);
   const title = pickText(content.title, lang);
   const description = pickText(content.shortDescription, lang);
@@ -30,6 +31,7 @@ export function ContentCard({ content, category }: ContentCardProps) {
             src={content.coverImage}
             alt={title}
             fill
+            priority={priority}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
           />

@@ -1,4 +1,4 @@
-﻿import type { Metadata, Viewport } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter, Noto_Sans_Bengali } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/common/Providers';
@@ -38,7 +38,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className="scroll-smooth">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className="scroll-smooth"
+    >
       <body
         className={`${inter.variable} ${notoBengali.variable} font-sans antialiased min-h-screen bg-background text-foreground`}
       >

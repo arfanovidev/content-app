@@ -16,7 +16,11 @@
     "notFoundHint": "This content may have been removed or the link is broken",
     "by": "By",
     "published": "Published",
-    "readTime": "min read"
+    "readTime": "min read",
+    "listen": "Listen",
+    "playing": "Playing...",
+    "paused": "Paused",
+    "audioNotSupported": "Audio not supported in this browser"
   },
   "common": {
     "loading": "Loading...",

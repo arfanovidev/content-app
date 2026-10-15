@@ -1,8 +1,7 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { FileQuestion } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/lib/constants';
 import { useMessages } from '@/hooks/useMessages';
 
@@ -23,9 +22,12 @@ export function NotFound() {
       <p className="mt-2 text-sm text-muted-foreground">
         {t.details.notFoundHint}
       </p>
-      <Button asChild className="mt-6 rounded-lg">
-        <Link href={ROUTES.HOME}>{t.details.backToHome}</Link>
-      </Button>
+      <Link
+        href={ROUTES.HOME}
+        className="mt-6 inline-flex h-10 items-center justify-center rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      >
+        {t.details.backToHome}
+      </Link>
     </div>
   );
 }

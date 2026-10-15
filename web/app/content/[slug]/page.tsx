@@ -7,6 +7,7 @@ import { useCategories } from '@/hooks/useCategories';
 import { BackButton } from '@/components/details/BackButton';
 import { DetailsHeader } from '@/components/details/DetailsHeader';
 import { ContentRenderer } from '@/components/details/ContentRenderer';
+import { DetailsContent } from '@/components/details/DetailsContent';
 import { DetailsSkeleton } from '@/components/details/DetailsSkeleton';
 import { NotFound } from '@/components/details/NotFound';
 
@@ -36,6 +37,10 @@ export default function ContentPage({ params }: PageProps) {
       </div>
 
       <DetailsHeader content={content} category={category} />
+
+      <div className="mt-6">
+        <DetailsContent content={content} />
+      </div>
 
       {content.coverImage && (
         <div className="relative mt-8 aspect-video overflow-hidden rounded-xl border border-border/60 bg-muted">
