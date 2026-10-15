@@ -1,0 +1,47 @@
+﻿{
+  "nav": {
+    "home": "হোম",
+    "favorites": "পছন্দের",
+    "weather": "আবহাওয়া",
+    "loading": "লোড হচ্ছে..."
+  },
+  "home": {
+    "categories": "বিভাগ",
+    "allCategories": "সব",
+    "content": "কনটেন্ট",
+    "noContent": "এখনো কোনো কনটেন্ট নেই",
+    "loadingContent": "কনটেন্ট লোড হচ্ছে..."
+  },
+  "common": {
+    "readTime": "মিনিট পড়া",
+    "back": "পিছনে",
+    "retry": "আবার চেষ্টা",
+    "loading": "লোড হচ্ছে..."
+  },
+  "theme": {
+    "light": "আলো",
+    "dark": "অন্ধকার",
+    "system": "সিস্টেম",
+    "toggle": "থিম পরিবর্তন"
+  },
+  "lang": {
+    "english": "English",
+    "bangla": "বাংলা",
+    "toggle": "ভাষা পরিবর্তন"
+  },
+  "weather": {
+    "error": "আবহাওয়া পাওয়া যায়নি",
+    "denied": "লোকেশন অনুমতি নেই",
+    "loading": "আবহাওয়া লোড হচ্ছে..."
+  },
+  "admin": {
+    "login": "অ্যাডমিন লগইন",
+    "username": "ইউজারনেম",
+    "password": "পাসওয়ার্ড",
+    "signIn": "সাইন ইন",
+    "logout": "লগআউট",
+    "dashboard": "ড্যাশবোর্ড",
+    "content": "কনটেন্ট",
+    "categories": "বিভাগ"
+  }
+}
