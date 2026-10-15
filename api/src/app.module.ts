@@ -7,6 +7,7 @@ import { ContentsModule } from './modules/contents/contents.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UploadModule } from './modules/upload/upload.module';
+import { WeatherModule } from './modules/weather/weather.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UploadModule } from './modules/upload/upload.module';
     CategoriesModule,
     AuthModule,
     UploadModule,
+    WeatherModule,
   ],
   controllers: [AppController],
   providers: [AppService],
