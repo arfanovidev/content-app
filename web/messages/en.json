@@ -37,6 +37,27 @@
     "denied": "Location denied",
     "loading": "Loading weather..."
   },
+  "admin": {
+    "loginTitle": "Admin Login",
+    "loginSubtitle": "Sign in to manage content",
+    "username": "Username",
+    "password": "Password",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "loginError": "Invalid username or password",
+    "backToHome": "Back to home",
+    "backToSite": "Back to site",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "content": "Content",
+    "categories": "Categories",
+    "welcomeBack": "Welcome back",
+    "totalContents": "Total Contents",
+    "totalCategories": "Total Categories",
+    "quickActions": "Quick Actions",
+    "newContent": "New Content",
+    "manageCategories": "Manage Categories"
+  },
   "common": {
     "loading": "Loading...",
     "retry": "Retry"

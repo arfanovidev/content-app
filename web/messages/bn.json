@@ -37,6 +37,27 @@
     "denied": "লোকেশন অনুমতি নেই",
     "loading": "আবহাওয়া লোড হচ্ছে..."
   },
+  "admin": {
+    "loginTitle": "অ্যাডমিন লগইন",
+    "loginSubtitle": "কনটেন্ট পরিচালনা করতে সাইন ইন করুন",
+    "username": "ইউজারনেম",
+    "password": "পাসওয়ার্ড",
+    "signIn": "সাইন ইন",
+    "signingIn": "সাইন ইন হচ্ছে...",
+    "loginError": "ভুল ইউজারনেম বা পাসওয়ার্ড",
+    "backToHome": "হোমে ফিরে যান",
+    "backToSite": "সাইটে ফিরে যান",
+    "logout": "লগআউট",
+    "dashboard": "ড্যাশবোর্ড",
+    "content": "কনটেন্ট",
+    "categories": "বিভাগ",
+    "welcomeBack": "স্বাগতম",
+    "totalContents": "মোট কনটেন্ট",
+    "totalCategories": "মোট বিভাগ",
+    "quickActions": "দ্রুত কাজ",
+    "newContent": "নতুন কনটেন্ট",
+    "manageCategories": "বিভাগ পরিচালনা"
+  },
   "common": {
     "loading": "লোড হচ্ছে...",
     "retry": "আবার চেষ্টা"
