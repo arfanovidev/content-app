@@ -1,4 +1,4 @@
-﻿import {
+import {
   Injectable,
   NotFoundException,
   BadRequestException,
@@ -52,6 +52,9 @@ export class ContentsService {
     return `${baseSlug}-${counter}`;
   }
 
+  /**
+   * List all contents, optionally filter by category
+   */
   async list(categoryId?: string): Promise<Content[]> {
     const contents = await this.getAll();
 
@@ -62,6 +65,9 @@ export class ContentsService {
     return contents;
   }
 
+  /**
+   * Get single content by slug
+   */
   async findBySlug(slug: string): Promise<Content> {
     const contents = await this.getAll();
     const found = contents.find((c) => c.slug === slug);
@@ -73,6 +79,9 @@ export class ContentsService {
     return found;
   }
 
+  /**
+   * Get single content by id
+   */
   async findById(id: string): Promise<Content> {
     const contents = await this.getAll();
     const found = contents.find((c) => c.id === id);
@@ -84,6 +93,9 @@ export class ContentsService {
     return found;
   }
 
+  /**
+   * Create new content
+   */
   async create(dto: CreateContentDto): Promise<Content> {
     const baseSlug = this.generateSlug(dto.title.en);
     if (!baseSlug) {
@@ -110,13 +122,16 @@ export class ContentsService {
     };
 
     const contents = await this.getAll();
-    contents.unshift(content);
+    contents.unshift(content); // newest first
     await this.saveAll(contents);
 
     this.logger.log(`Created content: ${content.slug} (${content.id})`);
     return content;
   }
 
+  /**
+   * Update existing content
+   */
   async update(id: string, dto: UpdateContentDto): Promise<Content> {
     const contents = await this.getAll();
     const index = contents.findIndex((c) => c.id === id);
@@ -127,6 +142,7 @@ export class ContentsService {
 
     const existing = contents[index];
 
+    // If title.en changed, regenerate slug
     let newSlug = existing.slug;
     if (dto.title?.en && dto.title.en !== existing.title.en) {
       const baseSlug = this.generateSlug(dto.title.en);
@@ -149,6 +165,9 @@ export class ContentsService {
     return updated;
   }
 
+  /**
+   * Delete content by id
+   */
   async remove(id: string): Promise<{ success: true; id: string }> {
     const contents = await this.getAll();
     const exists = contents.some((c) => c.id === id);

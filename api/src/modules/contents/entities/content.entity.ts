@@ -1,4 +1,4 @@
-﻿export interface Content {
+export interface Content {
   id: string;
   slug: string;
   title: {
@@ -12,10 +12,10 @@
   categoryId: string;
   tags: string[];
   coverImage: string;
-  quillDelta: any;
-  readTime: number;
+  quillDelta: any; // Quill Delta JSON
+  readTime: number; // minutes
   lang: 'en' | 'bn';
   author: string;
-  publishedAt: string;
-  updatedAt: string;
+  publishedAt: string; // ISO date
+  updatedAt: string; // ISO date
 }

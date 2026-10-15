@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { DriveModule } from './modules/drive/drive.module';
 import { ContentsModule } from './modules/contents/contents.module';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
     DriveModule,
     ContentsModule,
     CategoriesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
