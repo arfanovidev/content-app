@@ -47,7 +47,7 @@ export class CreateContentDto {
   quillDelta: any;
 
   @IsNumber()
-  @Min(1)
+  @Min(0.0167)
   readTime: number;
 
   @IsString()

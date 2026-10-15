@@ -1,4 +1,4 @@
-﻿import type { BilingualText } from '@/types';
+import type { BilingualText } from '@/types';
 
 export function pickText(field: BilingualText, lang: 'en' | 'bn'): string {
   return field[lang] || field.en || '';
@@ -14,5 +14,12 @@ export function formatDate(iso: string, lang: 'en' | 'bn'): string {
 }
 
 export function readTimeLabel(minutes: number, lang: 'en' | 'bn'): string {
-  return lang === 'bn' ? `${minutes} মিনিট` : `${minutes} min`;
+  // Less than 1 min → show seconds
+  if (minutes < 1) {
+    const seconds = Math.round(minutes * 60);
+    return lang === 'bn' ? `${seconds} সেকেন্ড` : `${seconds} sec`;
+  }
+
+  const rounded = Math.round(minutes);
+  return lang === 'bn' ? `${rounded} মিনিট` : `${rounded} min`;
 }
