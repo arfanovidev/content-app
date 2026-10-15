@@ -4,6 +4,7 @@ import { Logo } from './Logo';
 import { DarkModeToggle } from './DarkModeToggle';
 import { LangToggle } from './LangToggle';
 import { FavoritesLink } from './FavoritesLink';
+import { WeatherWidget } from './WeatherWidget';
 
 export function Navbar() {
   return (
@@ -12,6 +13,7 @@ export function Navbar() {
         <Logo />
 
         <div className="flex items-center gap-1 sm:gap-2">
+          <WeatherWidget />
           <FavoritesLink />
           <LangToggle />
           <DarkModeToggle />

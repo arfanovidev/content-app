@@ -32,6 +32,11 @@
     "emptyHint": "Complete content to add it here",
     "browse": "Browse content"
   },
+  "weather": {
+    "error": "Weather unavailable",
+    "denied": "Location denied",
+    "loading": "Loading weather..."
+  },
   "common": {
     "loading": "Loading...",
     "retry": "Retry"
