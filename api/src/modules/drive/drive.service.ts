@@ -1,5 +1,6 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+﻿import { Inject, Injectable, Logger } from '@nestjs/common';
 import { drive_v3 } from 'googleapis';
+import { Readable } from 'stream';
 import { DRIVE_CLIENT } from './drive.provider';
 
 @Injectable()
@@ -9,9 +10,6 @@ export class DriveService {
 
   constructor(@Inject(DRIVE_CLIENT) private readonly drive: drive_v3.Drive) {}
 
-  /**
-   * Read JSON from Google Drive
-   */
   async readJson<T>(fileId: string): Promise<T> {
     try {
       const res = await this.drive.files.get(
@@ -25,9 +23,6 @@ export class DriveService {
     }
   }
 
-  /**
-   * Write JSON to Google Drive (with write queue to prevent concurrent writes)
-   */
   async writeJson<T>(fileId: string, data: T): Promise<void> {
     const previous = this.writeQueue.get(fileId) ?? Promise.resolve();
 
@@ -54,9 +49,6 @@ export class DriveService {
     return next;
   }
 
-  /**
-   * Upload an image buffer to Drive
-   */
   async uploadImage(
     buffer: Buffer,
     name: string,
@@ -66,6 +58,11 @@ export class DriveService {
       const folderId = process.env.DRIVE_IMAGES_FOLDER_ID;
       if (!folderId) throw new Error('DRIVE_IMAGES_FOLDER_ID is not set');
 
+      // Convert Buffer to Readable Stream (googleapis requirement)
+      const bufferStream = new Readable();
+      bufferStream.push(buffer);
+      bufferStream.push(null);
+
       const res = await this.drive.files.create({
         requestBody: {
           name,
@@ -73,7 +70,7 @@ export class DriveService {
         },
         media: {
           mimeType,
-          body: Buffer.from(buffer),
+          body: bufferStream,
         },
         fields: 'id, webViewLink',
       });
@@ -99,9 +96,6 @@ export class DriveService {
     }
   }
 
-  /**
-   * Delete a file from Drive
-   */
   async deleteFile(fileId: string): Promise<void> {
     try {
       await this.drive.files.delete({ fileId });
