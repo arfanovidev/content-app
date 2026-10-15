@@ -6,25 +6,20 @@
   },
   "home": {
     "all": "All",
-    "categories": "Categories",
-    "content": "Content",
     "noContent": "No content yet",
-    "noContentHint": "New content will appear here",
-    "loading": "Loading..."
+    "noContentHint": "New content will appear here"
+  },
+  "details": {
+    "back": "Back",
+    "backToHome": "Back to home",
+    "notFound": "Content not found",
+    "notFoundHint": "This content may have been removed or the link is broken",
+    "by": "By",
+    "published": "Published",
+    "readTime": "min read"
   },
   "common": {
-    "readTime": "min read",
-    "back": "Back",
+    "loading": "Loading...",
     "retry": "Retry"
-  },
-  "theme": {
-    "toggle": "Toggle theme"
-  },
-  "lang": {
-    "toggle": "Switch language"
-  },
-  "weather": {
-    "error": "Weather unavailable",
-    "denied": "Location denied"
   }
 }
