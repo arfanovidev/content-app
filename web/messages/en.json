@@ -1,47 +1,30 @@
-﻿{
+{
   "nav": {
     "home": "Home",
     "favorites": "Favorites",
-    "weather": "Weather",
-    "loading": "Loading..."
+    "weather": "Weather"
   },
   "home": {
+    "all": "All",
     "categories": "Categories",
-    "allCategories": "All",
     "content": "Content",
     "noContent": "No content yet",
-    "loadingContent": "Loading content..."
+    "noContentHint": "New content will appear here",
+    "loading": "Loading..."
   },
   "common": {
     "readTime": "min read",
     "back": "Back",
-    "retry": "Retry",
-    "loading": "Loading..."
+    "retry": "Retry"
   },
   "theme": {
-    "light": "Light",
-    "dark": "Dark",
-    "system": "System",
     "toggle": "Toggle theme"
   },
   "lang": {
-    "english": "English",
-    "bangla": "বাংলা",
     "toggle": "Switch language"
   },
   "weather": {
     "error": "Weather unavailable",
-    "denied": "Location denied",
-    "loading": "Loading weather..."
-  },
-  "admin": {
-    "login": "Admin Login",
-    "username": "Username",
-    "password": "Password",
-    "signIn": "Sign In",
-    "logout": "Logout",
-    "dashboard": "Dashboard",
-    "content": "Content",
-    "categories": "Categories"
+    "denied": "Location denied"
   }
 }
