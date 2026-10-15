@@ -28,29 +28,29 @@ export function AudioPlayer({
     );
   }
 
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      onPause();
+    } else {
+      onPlay();
+    }
+  };
+
   return (
     <div className="flex items-center gap-2 rounded-xl border border-border bg-card p-3 shadow-sm">
-      {isPlaying ? (
-        <Button
-          type="button"
-          size="icon"
-          onClick={onPause}
-          aria-label="Pause"
-          className="rounded-lg"
-        >
+      <Button
+        type="button"
+        size="icon"
+        onClick={handlePlayPause}
+        aria-label={isPlaying ? 'Pause' : 'Play'}
+        className="rounded-lg"
+      >
+        {isPlaying ? (
           <Pause className="h-5 w-5" strokeWidth={2.5} />
-        </Button>
-      ) : (
-        <Button
-          type="button"
-          size="icon"
-          onClick={isPaused ? onPlay : onPlay}
-          aria-label="Play"
-          className="rounded-lg"
-        >
+        ) : (
           <Play className="h-5 w-5" strokeWidth={2.5} />
-        </Button>
-      )}
+        )}
+      </Button>
 
       <Button
         type="button"

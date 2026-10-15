@@ -13,10 +13,9 @@ type TTSStatus = 'idle' | 'playing' | 'paused';
 interface UseTTSOptions {
   text: string;
   lang: 'en' | 'bn';
-  onWordChange?: (index: number) => void;
 }
 
-export function useTTS({ text, lang, onWordChange }: UseTTSOptions) {
+export function useTTS({ text, lang }: UseTTSOptions) {
   const [status, setStatus] = useState<TTSStatus>('idle');
   const [activeWordIndex, setActiveWordIndex] = useState(-1);
   const [supported, setSupported] = useState(false);
@@ -29,31 +28,38 @@ export function useTTS({ text, lang, onWordChange }: UseTTSOptions) {
     setSupported(isSpeechSupported());
   }, []);
 
-  const cleanup = useCallback(() => {
+  const clearTimer = useCallback(() => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
+  }, []);
+
+  const stop = useCallback(() => {
+    clearTimer();
     if (typeof window !== 'undefined') {
       window.speechSynthesis.cancel();
     }
-  }, []);
-
-  useEffect(() => {
-    return () => cleanup();
-  }, [cleanup]);
-
-  const stop = useCallback(() => {
-    cleanup();
     setStatus('idle');
     setActiveWordIndex(-1);
-    onWordChange?.(-1);
-  }, [cleanup, onWordChange]);
+  }, [clearTimer]);
+
+  useEffect(() => {
+    return () => {
+      clearTimer();
+      if (typeof window !== 'undefined') {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [clearTimer]);
 
   const play = useCallback(() => {
     if (!supported || !text) return;
 
-    cleanup();
+    clearTimer();
+    if (typeof window !== 'undefined') {
+      window.speechSynthesis.cancel();
+    }
 
     const words = splitIntoWords(text);
     wordsRef.current = words;
@@ -78,7 +84,6 @@ export function useTTS({ text, lang, onWordChange }: UseTTSOptions) {
         );
         idx = wordIdx;
         setActiveWordIndex(wordIdx);
-        onWordChange?.(wordIdx);
       }
     };
 
@@ -90,38 +95,39 @@ export function useTTS({ text, lang, onWordChange }: UseTTSOptions) {
       stop();
     };
 
+    utteranceRef.current = utterance;
     setStatus('playing');
     setActiveWordIndex(0);
-    onWordChange?.(0);
 
-    utteranceRef.current = utterance;
     window.speechSynthesis.speak(utterance);
 
-    // Fallback timer if onboundary doesn't fire
     const interval = msPerWord(lang);
     timerRef.current = setInterval(() => {
       if (usingBoundary) return;
       idx += 1;
       if (idx < words.length) {
         setActiveWordIndex(idx);
-        onWordChange?.(idx);
       }
     }, interval);
-  }, [supported, text, lang, cleanup, stop, onWordChange]);
+  }, [supported, text, lang, clearTimer, stop]);
 
   const pause = useCallback(() => {
     if (!supported) return;
-    window.speechSynthesis.pause();
-    setStatus('paused');
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
+
+    if (typeof window !== 'undefined') {
+      window.speechSynthesis.pause();
     }
-  }, [supported]);
+    setStatus('paused');
+    clearTimer();
+  }, [supported, clearTimer]);
 
   const resume = useCallback(() => {
     if (!supported) return;
-    window.speechSynthesis.resume();
+
+    if (typeof window !== 'undefined') {
+      // Workaround: Chrome speechSynthesis.resume() sometimes doesn't fire
+      window.speechSynthesis.resume();
+    }
     setStatus('playing');
   }, [supported]);
 

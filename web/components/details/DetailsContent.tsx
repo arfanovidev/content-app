@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useTTS } from '@/hooks/useTTS';
 import { AudioPlayer } from './AudioPlayer';
 import { HighlightedContent } from './HighlightedContent';
@@ -12,7 +11,6 @@ interface DetailsContentProps {
 
 export function DetailsContent({ content }: DetailsContentProps) {
   const text = content.lang === 'bn' ? content.title.bn : content.title.en;
-  const [useHighlight, setUseHighlight] = useState(false);
 
   const tts = useTTS({
     text,
@@ -20,17 +18,11 @@ export function DetailsContent({ content }: DetailsContentProps) {
   });
 
   const handlePlay = () => {
-    setUseHighlight(true);
     if (tts.isPaused) {
       tts.resume();
     } else {
       tts.play();
     }
-  };
-
-  const handleStop = () => {
-    tts.stop();
-    setUseHighlight(false);
   };
 
   return (
@@ -41,10 +33,10 @@ export function DetailsContent({ content }: DetailsContentProps) {
         supported={tts.supported}
         onPlay={handlePlay}
         onPause={tts.pause}
-        onStop={handleStop}
+        onStop={tts.stop}
       />
 
-      {useHighlight && text ? (
+      {text ? (
         <HighlightedContent text={text} activeIndex={tts.activeWordIndex} />
       ) : null}
     </div>
