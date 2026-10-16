@@ -1,4 +1,4 @@
-﻿import { NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
@@ -18,9 +18,11 @@ async function bootstrap() {
     }),
   );
 
-  const port = process.env.PORT || 4000;
-  await app.listen(port);
+  const port = Number(process.env.PORT) || 4000;
 
-  console.log(`Server running at http://localhost:${port}/api`);
+  // Bind to 0.0.0.0 for Render / cloud hosts
+  await app.listen(port, '0.0.0.0');
+
+  console.log(`Server running at http://0.0.0.0:${port}/api`);
 }
 bootstrap();
