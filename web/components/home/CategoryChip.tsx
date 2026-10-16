@@ -4,12 +4,19 @@ interface CategoryChipProps {
   label: string;
   active: boolean;
   onClick: () => void;
+  dataId?: string;
 }
 
-export function CategoryChip({ label, active, onClick }: CategoryChipProps) {
+export function CategoryChip({
+  label,
+  active,
+  onClick,
+  dataId,
+}: CategoryChipProps) {
   return (
     <button
       type="button"
+      data-cat-id={dataId}
       onClick={onClick}
       className={[
         'inline-flex shrink-0 items-center rounded-full px-4 py-2 text-sm font-medium',
