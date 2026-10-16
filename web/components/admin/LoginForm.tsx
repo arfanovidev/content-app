@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useLogin } from '@/hooks/useAuth';
 import { useMessages } from '@/hooks/useMessages';
+import { showSuccess, showError } from '@/lib/toast';
 
 export function LoginForm() {
   const t = useMessages();
@@ -16,7 +17,21 @@ export function LoginForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!username || !password) return;
-    login.mutate({ username, password });
+
+    login.mutate(
+      { username, password },
+      {
+        onSuccess: () => {
+          showSuccess('Welcome back!', 'You are now signed in.');
+        },
+        onError: (err: any) => {
+          showError(
+            'Sign in failed',
+            err?.message || 'Invalid username or password'
+          );
+        },
+      }
+    );
   };
 
   const errorMessage = login.isError

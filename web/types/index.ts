@@ -1,4 +1,4 @@
-﻿export interface BilingualText {
+export interface BilingualText {
   en: string;
   bn: string;
 }
@@ -12,6 +12,9 @@ export interface Content {
   tags: string[];
   coverImage: string;
   quillDelta: any;
+    /** @deprecated kept for backward compatibility */
+    quillDeltaEn?: any;
+    quillDeltaBn?: any;
   readTime: number;
   lang: 'en' | 'bn';
   author: string;

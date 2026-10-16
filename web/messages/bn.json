@@ -15,8 +15,14 @@
     "notFound": "কনটেন্ট পাওয়া যায়নি",
     "notFoundHint": "এই কনটেন্ট মুছে ফেলা হয়েছে বা লিংকটি ভুল",
     "by": "লিখেছেন",
+    "author": "লেখক",
     "published": "প্রকাশিত",
-    "readTime": "মিনিট পড়া"
+    "readTime": "মিনিট পড়া",
+    "audioNotSupported": "অডিও সমর্থিত নয়",
+    "audioReady": "প্রস্তুত",
+    "audioPlaying": "চলছে",
+    "audioPaused": "বিরতি",
+    "noContent": "কোনো কনটেন্ট নেই"
   },
   "reading": {
     "progress": "% পড়া হয়েছে",

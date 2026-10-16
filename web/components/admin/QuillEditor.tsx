@@ -12,11 +12,19 @@ const ReactQuill = dynamic(() => import('react-quill-new'), {
 });
 
 interface QuillEditorProps {
+  /** HTML string value */
   value: string;
+  /** Returns HTML string */
   onChange: (html: string) => void;
+  /** Optional: also emits delta object (preferred for saving) */
+  onChangeDelta?: (delta: { ops: any[] }) => void;
 }
 
-export function QuillEditor({ value, onChange }: QuillEditorProps) {
+export function QuillEditor({
+  value,
+  onChange,
+  onChangeDelta,
+}: QuillEditorProps) {
   const modules = useMemo(
     () => ({
       toolbar: [
@@ -43,12 +51,26 @@ export function QuillEditor({ value, onChange }: QuillEditorProps) {
     'link',
   ];
 
+  const handleChange = (
+    html: string,
+    delta: any,
+    _source: any,
+    editor: any
+  ) => {
+    onChange(html);
+    if (onChangeDelta && editor?.getContents) {
+      onChangeDelta({ ops: editor.getContents().ops });
+    } else if (onChangeDelta && delta) {
+      onChangeDelta({ ops: delta.ops ?? [] });
+    }
+  };
+
   return (
     <div className="quill-wrapper">
       <ReactQuill
         theme="snow"
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
         modules={modules}
         formats={formats}
         placeholder="Write content here..."

@@ -21,7 +21,7 @@ export default function AdminLoginPage() {
   }, [isAuthenticated, router]);
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-10">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
       <div className="w-full max-w-sm space-y-6">
         <div className="flex flex-col items-center text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">

@@ -15,8 +15,14 @@
     "notFound": "Content not found",
     "notFoundHint": "This content may have been removed or the link is broken",
     "by": "By",
+    "author": "Author",
     "published": "Published",
-    "readTime": "min read"
+    "readTime": "min read",
+    "audioNotSupported": "Audio not supported",
+    "audioReady": "Ready",
+    "audioPlaying": "Playing",
+    "audioPaused": "Paused",
+    "noContent": "No content available"
   },
   "reading": {
     "progress": "% read",

@@ -1,4 +1,4 @@
-﻿import { create } from 'zustand';
+import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 type Lang = 'en' | 'bn';
@@ -11,10 +11,12 @@ interface LangState {
 
 export const useLangStore = create<LangState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       lang: 'en',
       setLang: (lang) => set({ lang }),
-      toggle: () => set({ lang: get().lang === 'en' ? 'bn' : 'en' }),
+      // ✅ Functional update — strict-mode safe
+      toggle: () =>
+        set((state) => ({ lang: state.lang === 'en' ? 'bn' : 'en' })),
     }),
     { name: 'lang-store' },
   ),

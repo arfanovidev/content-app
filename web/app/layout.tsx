@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Noto_Sans_Bengali } from 'next/font/google';
 import './globals.css';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import { Toaster } from 'sonner';
 import { Providers } from '@/components/common/Providers';
+import { ContentProtection } from '@/components/security/ContentProtection';
 import { UserKeyInit } from '@/components/common/UserKeyInit';
 import { Navbar } from '@/components/navbar/Navbar';
 
@@ -47,11 +50,23 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${notoBengali.variable} font-sans antialiased min-h-screen bg-background text-foreground`}
       >
+        <ContentProtection />
         <Providers>
           <UserKeyInit />
           <Navbar />
           <main className="min-h-[calc(100vh-4rem)]">{children}</main>
         </Providers>
+        <Toaster
+          position="top-right"
+          richColors
+          closeButton
+          toastOptions={{
+            classNames: {
+              toast:
+                'rounded-xl border border-border bg-card text-foreground',
+            },
+          }}
+        />
       </body>
     </html>
   );

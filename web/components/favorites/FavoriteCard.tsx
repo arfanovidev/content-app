@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Clock, Calendar } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { ROUTES } from '@/lib/constants';
 import { formatDate, pickText, readTimeLabel } from '@/lib/format';
 import { useLangStore } from '@/store/langStore';
@@ -22,38 +22,53 @@ export function FavoriteCard({ content, category, record }: FavoriteCardProps) {
   const description = pickText(content.shortDescription, lang);
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg">
-      <Link href={ROUTES.CONTENT(content.slug)} className="block p-4 sm:p-5">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          {category && (
-            <Badge variant="secondary" className="rounded-full px-2.5 py-0.5">
-              <span className="mr-1">{category.icon}</span>
-              {category.name[lang]}
-            </Badge>
+    <div className="rounded-xl border border-border bg-card transition-colors hover:border-primary/40">
+      <Link
+        href={ROUTES.CONTENT(content.slug)}
+        className="flex gap-3 p-3"
+      >
+        <div className="relative aspect-square h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-muted sm:h-24 sm:w-24">
+          {content.coverImage ? (
+            <Image
+              src={content.coverImage}
+              alt={title}
+              fill
+              sizes="96px"
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-xl font-bold text-muted-foreground">
+              {title.charAt(0).toUpperCase()}
+            </div>
           )}
         </div>
 
-        <h3 className="mt-3 text-balance text-base font-semibold leading-snug tracking-tight transition-colors group-hover:text-primary sm:text-lg line-clamp-2">
-          {title}
-        </h3>
-
-        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground line-clamp-2">
-          {description}
-        </p>
-
-        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5" strokeWidth={2} />
-            {readTimeLabel(content.readTime, lang)}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Calendar className="h-3.5 w-3.5" strokeWidth={2} />
-            {formatDate(record.completedAt, lang)}
-          </span>
+        <div className="min-w-0 flex-1">
+          {category && (
+            <span className="text-xs font-medium text-muted-foreground">
+              {category.name[lang]}
+            </span>
+          )}
+          <h3 className="line-clamp-2 text-sm font-semibold leading-snug tracking-tight sm:text-base">
+            {title}
+          </h3>
+          <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground sm:text-sm">
+            {description}
+          </p>
+          <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <Clock className="h-3 w-3" strokeWidth={2} />
+              {readTimeLabel(content.readTime, lang)}
+            </span>
+            <span className="flex items-center gap-1">
+              <Calendar className="h-3 w-3" strokeWidth={2} />
+              {formatDate(record.completedAt, lang)}
+            </span>
+          </div>
         </div>
       </Link>
 
-      <div className="border-t border-border/60 px-4 py-3 sm:px-5">
+      <div className="border-t border-border px-3 py-2">
         <VoteButtons contentId={content.id} />
       </div>
     </div>

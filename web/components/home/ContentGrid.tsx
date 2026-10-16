@@ -11,13 +11,14 @@ interface ContentGridProps {
 }
 
 export function ContentGrid({ categoryId }: ContentGridProps) {
-  const { data: contents, isLoading } = useContents(categoryId ?? undefined);
+  const { data: contents, isLoading, isError } = useContents(categoryId ?? undefined);
   const { data: categories } = useCategories();
 
-  if (isLoading) {
+  // ✅ Server down / fetching / error — সব ক্ষেত্রে infinite skeleton
+  if (isLoading || isError) {
     return (
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
+      <div className="grid grid-cols-1 gap-4">
+        {[1, 2, 3, 4].map((i) => (
           <CardSkeleton key={i} />
         ))}
       </div>
@@ -31,13 +32,13 @@ export function ContentGrid({ categoryId }: ContentGridProps) {
   const categoryMap = new Map(categories?.map((c) => [c.id, c]) ?? []);
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
+    <div className="grid grid-cols-1 gap-4">
       {contents.map((content, index) => (
         <ContentCard
           key={content.id}
           content={content}
           category={categoryMap.get(content.categoryId)}
-          priority={index < 3}
+          priority={index < 2}
         />
       ))}
     </div>

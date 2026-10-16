@@ -1,8 +1,9 @@
-﻿'use client';
+'use client';
 
-import { useMessages } from '@/hooks/useMessages';
-import { useLangStore } from '@/store/langStore';
+import { useRef, useEffect } from 'react';
 import { useCategories } from '@/hooks/useCategories';
+import { useLangStore } from '@/store/langStore';
+import { useMessages } from '@/hooks/useMessages';
 import { CategoryChip } from './CategoryChip';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -12,39 +13,71 @@ interface CategoryScrollProps {
 }
 
 export function CategoryScroll({ selectedId, onSelect }: CategoryScrollProps) {
-  const { data: categories, isLoading } = useCategories();
+  const { data: categories, isLoading, isError } = useCategories();
   const lang = useLangStore((s) => s.lang);
   const t = useMessages();
+  const scrollerRef = useRef<HTMLDivElement>(null);
 
-  if (isLoading) {
+  // Auto-scroll to selected chip on mount/change
+  useEffect(() => {
+    if (!selectedId || !scrollerRef.current) return;
+    const el = scrollerRef.current.querySelector<HTMLElement>(
+      `[data-cat-id="${selectedId}"]`
+    );
+    el?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }, [selectedId]);
+
+  if (isLoading || isError) {
     return (
-      <div className="scrollbar-hide -mx-4 flex gap-2 overflow-x-auto px-4 py-1 sm:mx-0 sm:px-0">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <Skeleton key={i} className="h-9 w-24 shrink-0 rounded-full" />
+      <div className="scrollbar-hide flex gap-1.5 overflow-x-auto py-1">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <Skeleton
+            key={i}
+            className="h-7 w-16 shrink-0 rounded-full bg-muted/60"
+          />
         ))}
       </div>
     );
   }
 
-  if (!categories || categories.length === 0) {
-    return null;
-  }
+  if (!categories || categories.length === 0) return null;
 
   return (
-    <div className="scrollbar-hide -mx-4 flex snap-x snap-mandatory gap-2 overflow-x-auto px-4 py-1 sm:mx-0 sm:px-0">
-      <CategoryChip
-        label={t.home.all}
-        active={selectedId === null}
-        onClick={() => onSelect(null)}
-      />
-      {categories.map((cat) => (
+    <div className="relative">
+      {/* right fade mask */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-background to-transparent" />
+      {/* left fade mask */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-background to-transparent" />
+
+      <div
+        ref={scrollerRef}
+        className="
+          scrollbar-hide
+          flex gap-1.5 overflow-x-auto
+          px-1 py-1
+          snap-x snap-mandatory
+          scroll-smooth
+          [-webkit-overflow-scrolling:touch]
+        "
+      >
         <CategoryChip
-          key={cat.id}
-          label={cat.icon ? `${cat.icon} ${cat.name[lang]}` : cat.name[lang]}
-          active={selectedId === cat.id}
-          onClick={() => onSelect(cat.id)}
+          label={t.home.all}
+          active={selectedId === null}
+          onClick={() => onSelect(null)}
+          dataId="__all__"
         />
-      ))}
+        {categories.map((cat) => (
+          <CategoryChip
+            key={cat.id}
+            dataId={cat.id}
+            label={cat.name[lang]}
+            active={selectedId === cat.id}
+            onClick={() => onSelect(cat.id)}
+          />
+        ))}
+        {/* end spacer */}
+        <span className="shrink-0 w-2" aria-hidden />
+      </div>
     </div>
   );
 }

@@ -7,13 +7,13 @@ export default function FavoritesPage() {
   const t = useMessages();
 
   return (
-    <div className="container mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
-      <div className="space-y-6 sm:space-y-8">
+    <div className="container mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-6">
+      <div className="space-y-5">
         <div>
-          <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
             {t.favorites.title}
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-muted-foreground">
             {t.favorites.subtitle}
           </p>
         </div>

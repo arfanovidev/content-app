@@ -8,13 +8,15 @@ import { FavoritesEmpty } from './FavoritesEmpty';
 import { FavoritesSkeleton } from './FavoritesSkeleton';
 
 export function FavoritesList() {
-  const { data: records, isLoading: loadingRecords } = useCompleted();
-  const { data: contents, isLoading: loadingContents } = useContents();
+  const { data: records, isLoading: loadingRecords, isError: errorRecords } = useCompleted();
+  const { data: contents, isLoading: loadingContents, isError: errorContents } = useContents();
   const { data: categories } = useCategories();
 
-  const isLoading = loadingRecords || loadingContents;
+  // ✅ Server down হলেও infinite skeleton
+  const showSkeleton =
+    loadingRecords || loadingContents || errorRecords || errorContents;
 
-  if (isLoading) {
+  if (showSkeleton) {
     return <FavoritesSkeleton />;
   }
 
@@ -36,17 +38,17 @@ export function FavoritesList() {
       };
     })
     .filter(Boolean) as Array<{
-    content: any;
-    record: any;
-    category: any;
-  }>;
+      content: any;
+      record: any;
+      category: any;
+    }>;
 
   if (items.length === 0) {
     return <FavoritesEmpty />;
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
+    <div className="grid grid-cols-1 gap-3">
       {items.map(({ content, record, category }) => (
         <FavoriteCard
           key={record.id}

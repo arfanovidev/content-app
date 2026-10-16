@@ -98,3 +98,16 @@ export function useDeleteCategory() {
     },
   });
 }
+/* ---------- Single content fetch (for edit page) ---------- */
+export function useContentById(id: string) {
+  return useQuery({
+    queryKey: ['admin-content', id],
+    queryFn: async () => {
+      const res = await api.get<Content>(API_ENDPOINTS.CONTENT_BY_ID(id));
+      return res.data;
+    },
+    enabled: !!id,
+    staleTime: 60 * 1000,
+    retry: 1,
+  });
+}
