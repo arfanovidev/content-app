@@ -15,11 +15,13 @@ interface AuthState {
   user: User | null;
   token: string | null;
   signupModalOpen: boolean;
+  _hasHydrated: boolean;
   isAuthenticated: () => boolean;
   setAuth: (user: User, token: string) => void;
   logout: () => void;
   openSignup: () => void;
   closeSignup: () => void;
+  setHasHydrated: (v: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -28,15 +30,20 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       token: null,
       signupModalOpen: false,
+      _hasHydrated: false,
       isAuthenticated: () => !!get().token,
       setAuth: (user, token) => set({ user, token }),
       logout: () => set({ user: null, token: null }),
       openSignup: () => set({ signupModalOpen: true }),
       closeSignup: () => set({ signupModalOpen: false }),
+      setHasHydrated: (v) => set({ _hasHydrated: v }),
     }),
     {
       name: 'auth-store-v2',
       partialize: (state) => ({ user: state.user, token: state.token }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );
