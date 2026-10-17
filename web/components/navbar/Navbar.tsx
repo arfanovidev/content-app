@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { Logo } from './Logo';
 import { DarkModeToggle } from './DarkModeToggle';
@@ -12,6 +13,10 @@ import { ProfileMenu } from './ProfileMenu';
 export function Navbar() {
   const isAuth = useAuthStore((s) => s.isAuthenticated());
   const openSignup = useAuthStore((s) => s.openSignup);
+  const pathname = usePathname();
+
+  // Show lang toggle only on content details page
+  const showLangToggle = pathname?.startsWith('/content/');
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/90 backdrop-blur-md">
@@ -21,16 +26,28 @@ export function Navbar() {
         </div>
 
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-          <Link href="/" className="text-muted-foreground transition-colors hover:text-foreground">
+          <Link
+            href="/"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
             Home
           </Link>
-          <Link href="/favorites" className="text-muted-foreground transition-colors hover:text-foreground">
+          <Link
+            href="/favorites"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
             Stories
           </Link>
-          <Link href="/donate" className="text-muted-foreground transition-colors hover:text-foreground">
+          <Link
+            href="/donate"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
             Donate
           </Link>
-          <Link href="/about" className="text-muted-foreground transition-colors hover:text-foreground">
+          <Link
+            href="/about"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
             Our Story
           </Link>
         </nav>
@@ -38,7 +55,7 @@ export function Navbar() {
         <div className="flex items-center gap-1 sm:gap-2">
           <WeatherWidget />
           {isAuth && <FavoritesLink />}
-          <LangToggle />
+          {showLangToggle && <LangToggle />}
           <DarkModeToggle />
           {isAuth ? (
             <ProfileMenu />
