@@ -32,11 +32,11 @@ export default function ProjectProposalPart2Page() {
 
           <div className="mb-8 rounded-xl border border-indigo-500/30 bg-indigo-50 p-4 dark:border-indigo-900 dark:bg-indigo-950/30">
             <p className="text-sm font-medium text-indigo-900 dark:text-indigo-200">
-              Project Proposal — Part 2 (Sections 14–29)
+              Project Proposal â€” Part 2 (Sections 14—29)
             </p>
             <p className="mt-1 text-xs text-indigo-700 dark:text-indigo-300">
               <Link href="/docs/project-proposal" className="underline">
-                ← Back to Part 1 (Sections 1–13)
+                â† Back to Part 1 (Sections 1—13)
               </Link>
             </p>
           </div>
@@ -53,33 +53,33 @@ export default function ProjectProposalPart2Page() {
 
           <h3>14.1 High-Level Architecture</h3>
           <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs">
-{`┌────────────────────────────────────────────┐
-│  Client (Browser)                          │
-│  Next.js 16 + Tailwind CSS                 │
-└────────────────┬───────────────────────────┘
-                 │ HTTPS / JWT
-                 ▼
-┌────────────────────────────────────────────┐
-│  REST API Backend                          │
-│  NestJS 12 + TypeScript                    │
-│  ┌──────────────────────────────────────┐ │
-│  │ Auth Module (JWT, bcrypt)            │ │
-│  │ Contents Module (CRUD)               │ │
-│  │ Categories Module (CRUD)             │ │
-│  │ Completed Module (progress)          │ │
-│  │ Votes Module (upvote/downvote)       │ │
-│  │ Weather Module (OpenWeather API)     │ │
-│  │ Upload Module (image upload)         │ │
-│  │ Drive Module (Google Drive API)      │ │
-│  └──────────────────────────────────────┘ │
-└────────────────┬───────────────────────────┘
-                 │ Google Drive API
-                 ▼
-┌────────────────────────────────────────────┐
-│  Storage (Google Drive)                    │
-│  contents.json, categories.json,           │
-│  users.json, completed.json, votes.json    │
-└────────────────────────────────────────────┘`}
+{`â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  Client (Browser)                          â”‚
+â”‚  Next.js 16 + Tailwind CSS                 â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                 â”‚ HTTPS / JWT
+                 â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  REST API Backend                          â”‚
+â”‚  NestJS 12 + TypeScript                    â”‚
+â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”‚
+â”‚  â”‚ Auth Module (JWT, bcrypt)            â”‚ â”‚
+â”‚  â”‚ Contents Module (CRUD)               â”‚ â”‚
+â”‚  â”‚ Categories Module (CRUD)             â”‚ â”‚
+â”‚  â”‚ Completed Module (progress)          â”‚ â”‚
+â”‚  â”‚ Votes Module (upvote/downvote)       â”‚ â”‚
+â”‚  â”‚ Weather Module (OpenWeather API)     â”‚ â”‚
+â”‚  â”‚ Upload Module (image upload)         â”‚ â”‚
+â”‚  â”‚ Drive Module (Google Drive API)      â”‚ â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                 â”‚ Google Drive API
+                 â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  Storage (Google Drive)                    â”‚
+â”‚  contents.json, categories.json,           â”‚
+â”‚  users.json, completed.json, votes.json    â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜`}
           </pre>
 
           <h3>14.2 Frontend Layer</h3>
@@ -313,13 +313,13 @@ export default function ProjectProposalPart2Page() {
             maintained through weekly milestones and continuous refactoring.
           </p>
           <ul>
-            <li><strong>Phase 1 — Requirements:</strong> gather and document functional and non-functional requirements.</li>
-            <li><strong>Phase 2 — Design:</strong> design the architecture, database model, and UI/UX.</li>
-            <li><strong>Phase 3 — Backend implementation:</strong> develop the REST API with authentication.</li>
-            <li><strong>Phase 4 — Frontend implementation:</strong> develop the user interfaces and integrate with the backend.</li>
-            <li><strong>Phase 5 — Testing:</strong> unit, integration, and end-to-end testing.</li>
-            <li><strong>Phase 6 — Deployment:</strong> deploy frontend and backend to production platforms.</li>
-            <li><strong>Phase 7 — Documentation:</strong> produce all required project artifacts.</li>
+            <li><strong>Phase 1 â€” Requirements:</strong> gather and document functional and non-functional requirements.</li>
+            <li><strong>Phase 2 â€” Design:</strong> design the architecture, database model, and UI/UX.</li>
+            <li><strong>Phase 3 â€” Backend implementation:</strong> develop the REST API with authentication.</li>
+            <li><strong>Phase 4 â€” Frontend implementation:</strong> develop the user interfaces and integrate with the backend.</li>
+            <li><strong>Phase 5 â€” Testing:</strong> unit, integration, and end-to-end testing.</li>
+            <li><strong>Phase 6 â€” Deployment:</strong> deploy frontend and backend to production platforms.</li>
+            <li><strong>Phase 7 â€” Documentation:</strong> produce all required project artifacts.</li>
           </ul>
 
           {/* 20. Testing Strategy */}
@@ -448,7 +448,7 @@ export default function ProjectProposalPart2Page() {
             <tbody>
               <tr>
                 <td>R-001</td>
-                <td>Free-tier backend sleeps after inactivity, causing 30–50 second delays.</td>
+                <td>Free-tier backend sleeps after inactivity, causing 30—50 second delays.</td>
                 <td>Medium</td>
                 <td>Configure UptimeRobot to ping the API every 5 minutes.</td>
               </tr>
@@ -543,7 +543,7 @@ export default function ProjectProposalPart2Page() {
           </ol>
 
           <p className="mt-12 text-center text-sm text-muted-foreground">
-            — End of Part 2 (Sections 14–29) —
+            â€” End of Part 2 (Sections 14—29) â€”
           </p>
 
           <p className="text-center">
@@ -551,7 +551,7 @@ export default function ProjectProposalPart2Page() {
               href="/docs/project-proposal"
               className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-border bg-background px-5 text-sm font-medium transition-colors hover:bg-accent"
             >
-              ← Back to Part 1
+              â† Back to Part 1
             </Link>
           </p>
 

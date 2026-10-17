@@ -26,7 +26,7 @@ const GROUPS: DocGroup[] = [
   {
     icon: FileText,
     title: 'Project Documentation',
-    description: 'Formal software engineering artifacts â€” from requirements to final report.',
+    description: 'Formal software engineering artifacts Ã¢â‚¬" from requirements to final report.',
     items: [
       { id: 1, title: 'Project Proposal', description: 'Complete academic proposal with 29 sections: abstract, problem statement, objectives, requirements, architecture, timeline, and references.', href: '/docs/project-proposal', status: 'ready' },
       { id: 2, title: 'Software Requirements Specification (SRS)', description: 'Detailed functional and non-functional requirements with unique IDs (FR-001 to FR-015, NFR-001 to NFR-010) and traceability.', href: '/docs/srs', status: 'ready' },
@@ -41,7 +41,7 @@ const GROUPS: DocGroup[] = [
       { id: 11, title: 'API Documentation', description: 'Interactive Swagger UI + reference for all REST endpoints with request/response examples.', href: 'https://content-api-f32c.onrender.com/api/docs', status: 'ready' },
       { id: 12, title: 'Software Test Plan', description: 'Test strategy, levels (unit/integration/e2e), coverage targets, and environment configuration.', href: '/docs/test-plan', status: 'ready' },
       { id: 13, title: 'Test Cases & Test Report', description: '50+ manual test cases with pass/fail status and coverage reports.', status: 'coming-soon' },
-      { id: 14, title: 'User Manual', description: 'Step-by-step guide for readers and administrators â€” signup, reading, audio, admin CRUD.', href: '/docs/user-manual', status: 'ready' },
+      { id: 14, title: 'User Manual', description: 'Step-by-step guide for readers and administrators Ã¢â‚¬" signup, reading, audio, admin CRUD.', href: '/docs/user-manual', status: 'ready' },
       { id: 15, title: 'Installation & Deployment Guide', description: 'Complete deployment instructions for Vercel and Render with environment variables.', href: '/docs/deployment', status: 'ready' },
       { id: 16, title: 'Final Project Report', description: 'Consolidated report covering requirements, design, implementation, testing, lessons learned.', status: 'coming-soon' },
       { id: 17, title: 'Presentation Slides (PPT)', description: 'Project defense presentation: problem, solution, architecture, demo, results.', status: 'coming-soon' },
@@ -131,7 +131,7 @@ export default function DocsPage() {
               <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Documentation</span>
             </h1>
             <p className="mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
-              Complete set of software engineering artifacts covering the full lifecycle â€” from requirements and design through implementation, testing, deployment, and maintenance.
+              Complete set of software engineering artifacts covering the full lifecycle Ã¢â‚¬" from requirements and design through implementation, testing, deployment, and maintenance.
             </p>
 
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -146,7 +146,7 @@ export default function DocsPage() {
                   <Database className="h-3 w-3" />Contents
                 </div>
                 <div className="mt-1 text-lg font-bold text-foreground">
-                  {stats.status === 'loading' ? 'â€¦' : stats.status === 'error' ? 'â€”' : stats.contents}
+                  {stats.status === 'loading' ? 'Ã¢â‚¬Â¦' : stats.status === 'error' ? 'Ã¢â‚¬"' : stats.contents}
                 </div>
               </div>
               <div className="rounded-lg border border-border bg-card px-3 py-2">
@@ -154,7 +154,7 @@ export default function DocsPage() {
                   <Server className="h-3 w-3" />Categories
                 </div>
                 <div className="mt-1 text-lg font-bold text-foreground">
-                  {stats.status === 'loading' ? 'â€¦' : stats.status === 'error' ? 'â€”' : stats.categories}
+                  {stats.status === 'loading' ? 'Ã¢â‚¬Â¦' : stats.status === 'error' ? 'Ã¢â‚¬"' : stats.categories}
                 </div>
               </div>
               <div className="rounded-lg border border-border bg-card px-3 py-2">
