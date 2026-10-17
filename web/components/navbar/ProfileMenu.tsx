@@ -11,7 +11,10 @@ export function ProfileMenu() {
   const logout = useAuthStore((s) => s.logout);
 
   if (!user) return null;
+
   const initials = user.username.slice(0, 2).toUpperCase();
+  const isAdmin = user.username === 'admin';
+  const dashboardUrl = isAdmin ? '/admin' : '/user';
 
   return (
     <div className="relative">
@@ -28,12 +31,18 @@ export function ProfileMenu() {
 
       {open && (
         <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden />
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setOpen(false)}
+            aria-hidden
+          />
           <div className="absolute right-0 top-11 z-50 w-56 overflow-hidden rounded-xl border border-border bg-popover shadow-lg">
             <div className="border-b border-border px-3 py-2.5">
               <p className="truncate text-sm font-semibold">{user.username}</p>
               {user.email && (
-                <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+                <p className="truncate text-xs text-muted-foreground">
+                  {user.email}
+                </p>
               )}
             </div>
 
@@ -48,12 +57,12 @@ export function ProfileMenu() {
               </Link>
 
               <Link
-                href="/admin"
+                href={dashboardUrl}
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
               >
                 <LayoutDashboard className="h-4 w-4" />
-                Dashboard
+                {isAdmin ? 'Admin Panel' : 'My Dashboard'}
               </Link>
 
               <button
