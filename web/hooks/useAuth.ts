@@ -26,7 +26,14 @@ export function useLogin() {
       return res.data;
     },
     onSuccess: (data) => {
-      setAuth(data.accessToken, data.user);
+      setAuth(
+        {
+          id: data.user?.username ?? 'user',
+          username: data.user?.username ?? 'admin',
+          provider: 'email',
+        },
+        data.accessToken
+      );
       queryClient.clear();
       router.push(ROUTES.ADMIN);
     },
