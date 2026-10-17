@@ -4,7 +4,7 @@ import './docs-vintage.css';
 
 export const metadata: Metadata = docMetadata(
   'Project Documentation',
-  'Complete software engineering artifacts for Content App Ã¢â‚¬" proposal, SRS, architecture, API, test plan, user manual, deployment.',
+  'Complete software engineering artifacts for Content App â‚¬" proposal, SRS, architecture, API, test plan, user manual, deployment.',
   '/docs'
 );
 

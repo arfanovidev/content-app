@@ -32,7 +32,7 @@ export default function ProjectProposalPart2Page() {
 
           <div className="mb-8 rounded-xl border border-indigo-500/30 bg-indigo-50 p-4 dark:border-indigo-900 dark:bg-indigo-950/30">
             <p className="text-sm font-medium text-indigo-900 dark:text-indigo-200">
-              Project Proposal â€” Part 2 (Sections 14—29)
+              Project Proposal — Part 2 (Sections 14—29)
             </p>
             <p className="mt-1 text-xs text-indigo-700 dark:text-indigo-300">
               <Link href="/docs/project-proposal" className="underline">
@@ -313,13 +313,13 @@ export default function ProjectProposalPart2Page() {
             maintained through weekly milestones and continuous refactoring.
           </p>
           <ul>
-            <li><strong>Phase 1 â€” Requirements:</strong> gather and document functional and non-functional requirements.</li>
-            <li><strong>Phase 2 â€” Design:</strong> design the architecture, database model, and UI/UX.</li>
-            <li><strong>Phase 3 â€” Backend implementation:</strong> develop the REST API with authentication.</li>
-            <li><strong>Phase 4 â€” Frontend implementation:</strong> develop the user interfaces and integrate with the backend.</li>
-            <li><strong>Phase 5 â€” Testing:</strong> unit, integration, and end-to-end testing.</li>
-            <li><strong>Phase 6 â€” Deployment:</strong> deploy frontend and backend to production platforms.</li>
-            <li><strong>Phase 7 â€” Documentation:</strong> produce all required project artifacts.</li>
+            <li><strong>Phase 1 — Requirements:</strong> gather and document functional and non-functional requirements.</li>
+            <li><strong>Phase 2 — Design:</strong> design the architecture, database model, and UI/UX.</li>
+            <li><strong>Phase 3 — Backend implementation:</strong> develop the REST API with authentication.</li>
+            <li><strong>Phase 4 — Frontend implementation:</strong> develop the user interfaces and integrate with the backend.</li>
+            <li><strong>Phase 5 — Testing:</strong> unit, integration, and end-to-end testing.</li>
+            <li><strong>Phase 6 — Deployment:</strong> deploy frontend and backend to production platforms.</li>
+            <li><strong>Phase 7 — Documentation:</strong> produce all required project artifacts.</li>
           </ul>
 
           {/* 20. Testing Strategy */}
@@ -543,7 +543,7 @@ export default function ProjectProposalPart2Page() {
           </ol>
 
           <p className="mt-12 text-center text-sm text-muted-foreground">
-            â€” End of Part 2 (Sections 14—29) â€”
+            — End of Part 2 (Sections 14—29) —
           </p>
 
           <p className="text-center">
