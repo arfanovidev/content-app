@@ -51,3 +51,14 @@ temp-json/
 out/
 **/.next/
 **/out/
+.env.production
+.env.*.production
+.env.local
+.env.*.local
+
+# Temporary scripts
+api/cleanup-*.js
+api/seed-*.js
+api/shorten-*.js
+api/quick-*.js
+api/revert-*.js
