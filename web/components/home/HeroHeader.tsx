@@ -5,7 +5,7 @@ import { Sparkles, ArrowRight } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 
 export function HeroHeader() {
-  const openSignup = useAuthStore((s) => s.openSignup);
+  const openSignup = () => useAuthStore.setState({ signupModalOpen: true });
 
   return (
     <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
@@ -26,8 +26,8 @@ export function HeroHeader() {
             </h1>
 
             <p className="max-w-lg text-balance text-base text-muted-foreground sm:text-lg">
-              A place to read, write, and deepen your understanding — in English
-              and বাংলা.
+              A place to read, write, and deepen your understanding â€” in English
+              and à¦¬à¦¾à¦‚à¦²à¦¾.
             </p>
 
             <div className="flex flex-wrap items-center gap-3">
