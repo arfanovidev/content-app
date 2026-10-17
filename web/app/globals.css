@@ -340,3 +340,29 @@ html[data-devtools='open'] body {
   opacity: 0.75 !important;
   margin-top: 2px !important;
 }
+/* ===== Footer animations ===== */
+@keyframes gravity-fall {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(48px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes sci-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
