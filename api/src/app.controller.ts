@@ -28,15 +28,30 @@ export class AppController {
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Content API — Production Backend</title>
 <meta name="description" content="Bilingual content platform API. Built with NestJS, JWT auth, Google Drive storage." />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%236366f1'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='22' font-family='-apple-system,sans-serif' font-size='18' font-weight='800' fill='white' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%236366f1'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='22' font-family='-apple-system,sans-serif' font-size='18' font-weight='800' fill='white' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E" />
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0a0a0a;--bg-2:#111111;--bg-3:#1a1a1a;--border:#262626;--border-2:#333;--fg:#fafafa;--fg-2:#a1a1aa;--fg-3:#71717a;--primary:#6366f1;--primary-2:#818cf8;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--blue:#3b82f6;--pink:#ec4899;--purple:#a855f7}
 html,body{background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',Roboto,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
-body{min-height:100vh;background:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(99,102,241,0.15),transparent),var(--bg)}
+body{min-height:100vh;background:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(99,102,241,0.15),transparent),var(--bg);opacity:0;transition:opacity 0.5s ease}
+body.loaded{opacity:1}
 a{color:inherit;text-decoration:none}
 code{font-family:'SF Mono',Menlo,Monaco,'Courier New',monospace;font-size:0.875em}
 .container{max-width:1200px;margin:0 auto;padding:0 24px}
 
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;z-index:9999;transition:opacity 0.5s ease,visibility 0.5s ease}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--pink));display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#fff;animation:loaderPulse 1.5s ease-in-out infinite;box-shadow:0 0 40px rgba(99,102,241,0.4)}
+@keyframes loaderPulse{0%,100%{transform:scale(1);box-shadow:0 0 40px rgba(99,102,241,0.4)}50%{transform:scale(1.08);box-shadow:0 0 60px rgba(236,72,153,0.6)}}
+.loader-spinner{width:40px;height:40px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--primary);animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-text{font-size:13px;color:var(--fg-3);font-weight:500;letter-spacing:0.08em;text-transform:uppercase}
+
+/* NAV */
 nav{border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;background:rgba(10,10,10,0.85);backdrop-filter:blur(12px);z-index:100}
 nav .container{display:flex;justify-content:space-between;align-items:center}
 .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
@@ -47,6 +62,7 @@ nav .container{display:flex;justify-content:space-between;align-items:center}
 .status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,0.5)}50%{opacity:0.6;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
 
+/* HERO */
 .hero{padding:80px 0 60px;text-align:center}
 .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);color:var(--primary-2);font-size:12px;font-weight:500;margin-bottom:24px}
 .hero h1{font-size:clamp(36px,6vw,64px);font-weight:800;letter-spacing:-0.03em;line-height:1.05;margin-bottom:20px}
@@ -59,6 +75,7 @@ nav .container{display:flex;justify-content:space-between;align-items:center}
 .btn-secondary{background:var(--bg-2);color:var(--fg);border-color:var(--border-2)}
 .btn-secondary:hover{background:var(--bg-3);border-color:var(--fg-3)}
 
+/* STATS */
 .stats{padding:40px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-2)}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;text-align:center}
 .stat-value{font-size:32px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px}
@@ -68,10 +85,12 @@ nav .container{display:flex;justify-content:space-between;align-items:center}
 .stat-value.purple{color:var(--purple)}
 .stat-value.amber{color:var(--amber)}
 
+/* SECTIONS */
 section{padding:64px 0}
 .section-title{font-size:28px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px}
 .section-desc{color:var(--fg-2);margin-bottom:40px;font-size:15px}
 
+/* ARCHITECTURE */
 .arch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
 .arch-card{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:24px;position:relative;overflow:hidden;transition:all 0.2s}
 .arch-card:hover{border-color:var(--primary);transform:translateY(-2px)}
@@ -80,6 +99,7 @@ section{padding:64px 0}
 .arch-card h3{font-size:15px;font-weight:600;margin-bottom:8px}
 .arch-card p{font-size:13px;color:var(--fg-2);line-height:1.5}
 
+/* ENDPOINTS */
 .endpoint-group{margin-bottom:32px}
 .endpoint-group-title{font-size:14px;font-weight:600;color:var(--fg-3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px}
 .endpoint-list{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
@@ -94,6 +114,7 @@ section{padding:64px 0}
 .endpoint-path{font-family:'SF Mono',Menlo,monospace;color:var(--fg);font-size:13px}
 .endpoint-desc{color:var(--fg-3);font-size:12px;margin-left:auto}
 
+/* CODE */
 .code-block{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:16px}
 .code-header{padding:10px 16px;background:var(--bg-3);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--fg-3)}
 .code-dots{display:flex;gap:6px}
@@ -104,8 +125,15 @@ section{padding:64px 0}
 .code-body{padding:16px 20px;font-family:'SF Mono',Menlo,monospace;font-size:12px;line-height:1.7;color:var(--fg-2);overflow-x:auto;white-space:pre}
 .code-body .key{color:#93c5fd}
 .code-body .string{color:#86efac}
-.code-body .number{color:#fbbf24}
 
+/* SECURITY */
+.security-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.security-item{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;gap:14px}
+.security-icon{width:36px;height:36px;border-radius:8px;background:rgba(34,197,94,0.1);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.security-content h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.security-content p{font-size:13px;color:var(--fg-3);line-height:1.5}
+
+/* TECH STACK */
 .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
 .tech-item{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;transition:all 0.2s}
 .tech-item:hover{border-color:var(--primary);transform:translateY(-2px)}
@@ -113,16 +141,12 @@ section{padding:64px 0}
 .tech-name{font-size:13px;font-weight:600;margin-bottom:2px}
 .tech-version{font-size:11px;color:var(--fg-3);font-family:monospace}
 
-.security-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.security-item{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;gap:14px}
-.security-icon{width:36px;height:36px;border-radius:8px;background:rgba(34,197,94,0.1);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.security-content h4{font-size:14px;font-weight:600;margin-bottom:4px}
-.security-content p{font-size:13px;color:var(--fg-3);line-height:1.5}
-
+/* CTA */
 .cta{background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(236,72,153,0.1));border:1px solid var(--border);border-radius:20px;padding:48px 32px;text-align:center;margin:32px 0}
 .cta h2{font-size:28px;font-weight:800;letter-spacing:-0.02em;margin-bottom:12px}
 .cta p{color:var(--fg-2);margin-bottom:24px;max-width:560px;margin-left:auto;margin-right:auto}
 
+/* FOOTER */
 footer{border-top:1px solid var(--border);padding:32px 0;text-align:center;color:var(--fg-3);font-size:13px}
 footer .container{display:flex;flex-direction:column;gap:8px;align-items:center}
 footer a{color:var(--fg-2)}
@@ -138,6 +162,28 @@ footer a:hover{color:var(--fg)}
 </style>
 </head>
 <body>
+
+<div id="loader">
+  <div class="loader-logo">C</div>
+  <div class="loader-spinner"></div>
+  <div class="loader-text">Loading Content API</div>
+</div>
+
+<script>
+function hideLoader() {
+  var loader = document.getElementById('loader');
+  if (loader) loader.classList.add('hidden');
+  document.body.classList.add('loaded');
+}
+if (document.readyState === 'complete') {
+  setTimeout(hideLoader, 300);
+} else {
+  window.addEventListener('load', function() {
+    setTimeout(hideLoader, 300);
+  });
+}
+setTimeout(hideLoader, 2000);
+</script>
 
 <nav>
   <div class="container">
