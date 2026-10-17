@@ -45,13 +45,13 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  SwaggerModule.setup('docs', app, document);
 
   const port = Number(process.env.PORT) || 4000;
 
   await app.listen(port, '0.0.0.0');
 
   console.log(`Server running at http://0.0.0.0:${port}/api`);
-  console.log(`Swagger docs at http://0.0.0.0:${port}/api/docs`);
+  console.log(`Swagger docs at http://0.0.0.0:${port}/docs`);
 }
 bootstrap();
