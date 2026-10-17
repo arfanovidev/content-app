@@ -7,6 +7,8 @@ import { Providers } from '@/components/common/Providers';
 import { ContentProtection } from '@/components/security/ContentProtection';
 import { UserKeyInit } from '@/components/common/UserKeyInit';
 import { Navbar } from '@/components/navbar/Navbar';
+import { Footer } from '@/components/layout/Footer';
+import { SignupModal } from '@/components/auth/SignupModal';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -55,6 +57,8 @@ export default function RootLayout({
           <UserKeyInit />
           <Navbar />
           <main className="min-h-[calc(100vh-4rem)]">{children}</main>
+            <Footer />
+          <SignupModal />
         </Providers>
         <Toaster
           position="top-right"
