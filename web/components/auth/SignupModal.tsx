@@ -19,7 +19,6 @@ declare global {
         id: {
           initialize: (config: any) => void;
           renderButton: (el: HTMLElement, opts: any) => void;
-          prompt: () => void;
         };
       };
     };
@@ -39,7 +38,6 @@ export function SignupModal() {
   const [error, setError] = useState<string | null>(null);
   const googleBtnRef = useRef<HTMLDivElement>(null);
 
-  // Load Google Identity Services + render button
   useEffect(() => {
     if (!open) return;
     if (!googleBtnRef.current) return;
@@ -64,7 +62,7 @@ export function SignupModal() {
                 avatar: data.user?.picture,
                 provider: 'google',
               },
-              data.accessToken
+              data.accessToken,
             );
 
             showSuccess('Welcome!', `Signed in as ${data.user?.email}`);
@@ -85,7 +83,6 @@ export function SignupModal() {
       });
     };
 
-    // Load script if not present
     if (window.google) {
       renderGoogle();
     } else {
@@ -108,38 +105,33 @@ export function SignupModal() {
     try {
       if (mode === 'signin') {
         const res = await api.post('/auth/login', {
-          username: email.split('@')[0] || username,
+          username: email || username,
           password,
         });
         setAuth(
           {
-            id: res.data.user?.username ?? 'user',
+            id: res.data.user?.id ?? res.data.user?.username ?? 'user',
             username: res.data.user?.username ?? email.split('@')[0],
-            email,
+            email: res.data.user?.email ?? email,
             provider: 'email',
           },
-          res.data.accessToken
+          res.data.accessToken,
         );
         showSuccess('Welcome back!', 'Signed in successfully');
       } else {
-        // Backend signup not implemented — use fallback
-        const res = await api
-          .post('/auth/signup', { username, email, password })
-          .catch(() => ({
-            data: {
-              accessToken: `local-${Date.now()}`,
-              user: { id: 'user', username },
-            },
-          }));
-
+        const res = await api.post('/auth/signup', {
+          username,
+          email,
+          password,
+        });
         setAuth(
           {
-            id: res.data.user?.id ?? 'user',
+            id: res.data.user?.id ?? res.data.user?.username ?? 'user',
             username: res.data.user?.username ?? username,
-            email,
+            email: res.data.user?.email ?? email,
             provider: 'email',
           },
-          res.data.accessToken
+          res.data.accessToken,
         );
         showSuccess('Account created!', 'Welcome aboard');
       }
@@ -149,13 +141,6 @@ export function SignupModal() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleOAuthPlaceholder = (provider: 'linkedin' | 'facebook') => {
-    showError(
-      `${provider} login`,
-      'Coming soon — use Google or email for now'
-    );
   };
 
   return (
@@ -171,44 +156,20 @@ export function SignupModal() {
         </button>
 
         <h2 className="text-center text-3xl font-bold tracking-tight">
-          Join Medium.
+          {mode === 'signup' ? 'Join Medium.' : 'Welcome back.'}
         </h2>
 
-        {/* Google button — REAL */}
         <div className="mt-6 flex justify-center">
           <div ref={googleBtnRef} />
         </div>
 
-        {/* Divider */}
         <div className="my-4 flex items-center gap-3">
           <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
           <span className="text-xs text-zinc-400">or</span>
           <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
         </div>
 
-        {/* Other OAuth — placeholder */}
-        <div className="space-y-2">
-          <button
-            type="button"
-            onClick={() => handleOAuthPlaceholder('linkedin')}
-            className="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-zinc-300 bg-white text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700"
-          >
-            <Briefcase className="h-4 w-4" />
-            Sign up with LinkedIn
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleOAuthPlaceholder('facebook')}
-            className="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-zinc-300 bg-white text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700"
-          >
-            <Users className="h-4 w-4" />
-            Sign up with Facebook
-          </button>
-        </div>
-
-        {/* Email form */}
-        <form onSubmit={handleEmailAuth} className="mt-4 space-y-3">
+        <form onSubmit={handleEmailAuth} className="space-y-3">
           {mode === 'signup' && (
             <div>
               <Label htmlFor="username" className="text-xs font-medium">
@@ -228,14 +189,14 @@ export function SignupModal() {
 
           <div>
             <Label htmlFor="email" className="text-xs font-medium">
-              Email
+              {mode === 'signup' ? 'Email' : 'Username or Email'}
             </Label>
             <Input
               id="email"
-              type="email"
+              type={mode === 'signup' ? 'email' : 'text'}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
+              placeholder={mode === 'signup' ? 'you@example.com' : 'admin or you@example.com'}
               required
               className="mt-1"
             />
@@ -256,11 +217,6 @@ export function SignupModal() {
               className="mt-1"
             />
           </div>
-
-          <label className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
-            <input type="checkbox" className="rounded border-zinc-300" />
-            Remember me for faster sign in
-          </label>
 
           {error && (
             <p className="rounded-lg bg-red-50 p-2 text-xs text-red-600 dark:bg-red-950/50 dark:text-red-400">
@@ -307,11 +263,6 @@ export function SignupModal() {
               </button>
             </>
           )}
-        </p>
-
-        <p className="mt-4 text-center text-[11px] leading-relaxed text-zinc-400">
-          By clicking &quot;{mode === 'signup' ? 'Sign up' : 'Sign in'}&quot;, you
-          accept Medium&apos;s Terms of Service and Privacy Policy.
         </p>
       </div>
     </div>
