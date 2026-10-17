@@ -1,4 +1,4 @@
-﻿import {
+import {
   Controller,
   Post,
   Get,
@@ -20,6 +20,15 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
+  }
+
+  @Post('google')
+  @HttpCode(HttpStatus.OK)
+  async googleLogin(@Body() body: { idToken: string }) {
+    if (!body?.idToken) {
+      throw new UnauthorizedException('idToken required');
+    }
+    return this.authService.googleLogin(body.idToken);
   }
 
   @Get('me')

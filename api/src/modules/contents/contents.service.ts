@@ -53,8 +53,34 @@ export class ContentsService {
   }
 
   /**
-   * List all contents, optionally filter by category
+   * Normalize delta fields.
+   * Legacy fallback: if only quillDelta is set, route it to quillDeltaEn/Bn
+   * based on the `lang` field.
    */
+  private normalizeDeltas(dto: {
+    quillDelta?: any;
+    quillDeltaEn?: any;
+    quillDeltaBn?: any;
+    lang?: 'en' | 'bn';
+  }): { quillDeltaEn?: any; quillDeltaBn?: any } {
+    const out: { quillDeltaEn?: any; quillDeltaBn?: any } = {};
+
+    if (dto.quillDeltaEn !== undefined) out.quillDeltaEn = dto.quillDeltaEn;
+    if (dto.quillDeltaBn !== undefined) out.quillDeltaBn = dto.quillDeltaBn;
+
+    // Legacy: only quillDelta provided → route by lang
+    if (
+      dto.quillDelta !== undefined &&
+      dto.quillDeltaEn === undefined &&
+      dto.quillDeltaBn === undefined
+    ) {
+      if (dto.lang === 'bn') out.quillDeltaBn = dto.quillDelta;
+      else out.quillDeltaEn = dto.quillDelta;
+    }
+
+    return out;
+  }
+
   async list(categoryId?: string): Promise<Content[]> {
     const contents = await this.getAll();
 
@@ -65,9 +91,6 @@ export class ContentsService {
     return contents;
   }
 
-  /**
-   * Get single content by slug
-   */
   async findBySlug(slug: string): Promise<Content> {
     const contents = await this.getAll();
     const found = contents.find((c) => c.slug === slug);
@@ -79,9 +102,6 @@ export class ContentsService {
     return found;
   }
 
-  /**
-   * Get single content by id
-   */
   async findById(id: string): Promise<Content> {
     const contents = await this.getAll();
     const found = contents.find((c) => c.id === id);
@@ -93,9 +113,6 @@ export class ContentsService {
     return found;
   }
 
-  /**
-   * Create new content
-   */
   async create(dto: CreateContentDto): Promise<Content> {
     const baseSlug = this.generateSlug(dto.title.en);
     if (!baseSlug) {
@@ -104,6 +121,7 @@ export class ContentsService {
 
     const slug = await this.uniqueSlug(baseSlug);
     const now = new Date().toISOString();
+    const deltas = this.normalizeDeltas(dto);
 
     const content: Content = {
       id: randomUUID(),
@@ -113,7 +131,12 @@ export class ContentsService {
       categoryId: dto.categoryId,
       tags: dto.tags ?? [],
       coverImage: dto.coverImage,
-      quillDelta: dto.quillDelta,
+      // legacy field — set to primary language's delta
+      quillDelta:
+        dto.quillDelta ??
+        (dto.lang === 'bn' ? deltas.quillDeltaBn : deltas.quillDeltaEn),
+      quillDeltaEn: deltas.quillDeltaEn,
+      quillDeltaBn: deltas.quillDeltaBn,
       readTime: dto.readTime,
       lang: dto.lang,
       author: dto.author,
@@ -122,16 +145,13 @@ export class ContentsService {
     };
 
     const contents = await this.getAll();
-    contents.unshift(content); // newest first
+    contents.unshift(content);
     await this.saveAll(contents);
 
     this.logger.log(`Created content: ${content.slug} (${content.id})`);
     return content;
   }
 
-  /**
-   * Update existing content
-   */
   async update(id: string, dto: UpdateContentDto): Promise<Content> {
     const contents = await this.getAll();
     const index = contents.findIndex((c) => c.id === id);
@@ -142,12 +162,16 @@ export class ContentsService {
 
     const existing = contents[index];
 
-    // If title.en changed, regenerate slug
     let newSlug = existing.slug;
     if (dto.title?.en && dto.title.en !== existing.title.en) {
       const baseSlug = this.generateSlug(dto.title.en);
       newSlug = await this.uniqueSlug(baseSlug);
     }
+
+    const deltas = this.normalizeDeltas({
+      ...dto,
+      lang: dto.lang ?? existing.lang,
+    });
 
     const updated: Content = {
       ...existing,
@@ -155,6 +179,9 @@ export class ContentsService {
       slug: newSlug,
       title: dto.title ?? existing.title,
       shortDescription: dto.shortDescription ?? existing.shortDescription,
+      quillDelta: dto.quillDelta ?? existing.quillDelta,
+      quillDeltaEn: deltas.quillDeltaEn ?? existing.quillDeltaEn,
+      quillDeltaBn: deltas.quillDeltaBn ?? existing.quillDeltaBn,
       updatedAt: new Date().toISOString(),
     };
 
@@ -165,9 +192,6 @@ export class ContentsService {
     return updated;
   }
 
-  /**
-   * Delete content by id
-   */
   async remove(id: string): Promise<{ success: true; id: string }> {
     const contents = await this.getAll();
     const exists = contents.some((c) => c.id === id);

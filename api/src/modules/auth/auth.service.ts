@@ -1,7 +1,8 @@
-﻿import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
+import { OAuth2Client } from 'google-auth-library';
 
 @Injectable()
 export class AuthService {
@@ -45,6 +46,54 @@ export class AuthService {
         role: 'admin',
       },
     };
+  }
+
+  /**
+ * Verify Google ID token and issue JWT.
+ */
+async googleLogin(idToken: string): Promise<{ accessToken: string; user: any }> {
+    const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID;
+    if (!clientId) {
+      throw new UnauthorizedException('GOOGLE_OAUTH_CLIENT_ID not configured');
+    }
+
+    const client = new OAuth2Client(clientId);
+
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken,
+        audience: clientId,
+      });
+      const payload = ticket.getPayload();
+
+      if (!payload || !payload.email) {
+        throw new UnauthorizedException('Invalid Google token');
+      }
+
+      const isAdmin = payload.email === process.env.ADMIN_EMAIL;
+      const user = {
+        sub: payload.sub,
+        username: payload.email.split('@')[0],
+        email: payload.email,
+        name: payload.name,
+        picture: payload.picture,
+        role: isAdmin ? 'admin' : 'user',
+      };
+
+      const accessToken = await this.jwtService.signAsync({
+        sub: payload.sub,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      });
+
+      this.logger.log(`Google login: ${user.email} (${user.role})`);
+
+      return { accessToken, user };
+    } catch (err) {
+      this.logger.warn(`Google token verify failed: ${err?.message ?? err}`);
+      throw new UnauthorizedException('Invalid Google token');
+    }
   }
 
   async verifyProfile(user: any) {

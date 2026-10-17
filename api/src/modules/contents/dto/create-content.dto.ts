@@ -4,6 +4,7 @@ import {
   IsNumber,
   IsObject,
   IsIn,
+  IsOptional,
   Min,
   ValidateNested,
   IsNotEmpty,
@@ -43,8 +44,18 @@ export class CreateContentDto {
   @IsNotEmpty()
   coverImage: string;
 
+  /** @deprecated use quillDeltaEn / quillDeltaBn */
+  @IsOptional()
   @IsObject()
-  quillDelta: any;
+  quillDelta?: any;
+
+  @IsOptional()
+  @IsObject()
+  quillDeltaEn?: any;
+
+  @IsOptional()
+  @IsObject()
+  quillDeltaBn?: any;
 
   @IsNumber()
   @Min(0.0167)

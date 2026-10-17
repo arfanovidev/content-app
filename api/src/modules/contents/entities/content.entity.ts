@@ -12,7 +12,10 @@ export interface Content {
   categoryId: string;
   tags: string[];
   coverImage: string;
-  quillDelta: any; // Quill Delta JSON
+  /** @deprecated use quillDeltaEn / quillDeltaBn */
+  quillDelta?: any;
+  quillDeltaEn?: any; // Quill Delta JSON (English)
+  quillDeltaBn?: any; // Quill Delta JSON (Bengali)
   readTime: number; // minutes
   lang: 'en' | 'bn';
   author: string;
