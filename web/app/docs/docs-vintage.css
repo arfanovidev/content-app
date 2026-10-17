@@ -1,0 +1,193 @@
+/* =========================================================
+   Vintage Engineering Document Theme — scoped to /docs
+   ========================================================= */
+:root {
+  --v-paper:      #f4ecd8;
+  --v-paper-2:    #efe4c9;
+  --v-paper-edge: #e3d4b0;
+  --v-ink:        #2b1d0e;
+  --v-ink-soft:   #4a3823;
+  --v-ink-faint:  #7a6647;
+  --v-accent:     #7a2e1f;
+  --v-accent-2:   #8b5a2b;
+  --v-gold:       #a8862c;
+  --v-rule:       #b8a37a;
+}
+.dark {
+  --v-paper:      #1a1410;
+  --v-paper-2:    #221a14;
+  --v-paper-edge: #332619;
+  --v-ink:        #ece1c8;
+  --v-ink-soft:   #d9c9a6;
+  --v-ink-faint:  #a08b63;
+  --v-accent:     #c97a5e;
+  --v-accent-2:   #b98a54;
+  --v-gold:       #d9b85a;
+  --v-rule:       #4a3a24;
+}
+.vintage-docs {
+  background-color: var(--v-paper);
+  color: var(--v-ink);
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(139, 90, 43, 0.06) 0, transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(122, 46, 31, 0.05) 0, transparent 45%),
+    radial-gradient(circle at 50% 100%, rgba(168, 134, 44, 0.06) 0, transparent 50%);
+  font-family: 'Georgia', 'Iowan Old Style', 'Palatino Linotype',
+               'Book Antiqua', 'Cambria', 'Times New Roman', serif;
+  font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1;
+}
+.vintage-docs .v-hero {
+  background:
+    linear-gradient(180deg, rgba(122, 46, 31, 0.06) 0%, transparent 100%),
+    var(--v-paper-2);
+  border-bottom: 3px double var(--v-rule);
+}
+.vintage-docs .v-card,
+.vintage-docs .rounded-xl.border.border-border.bg-card,
+.vintage-docs .rounded-lg.border.border-border.bg-card {
+  background-color: var(--v-paper-2) !important;
+  border-color: var(--v-paper-edge) !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.35) inset,
+              0 2px 6px rgba(43, 29, 14, 0.08);
+}
+.vintage-docs .prose {
+  color: var(--v-ink-soft);
+  font-family: 'Georgia', 'Iowan Old Style', 'Palatino Linotype',
+               'Book Antiqua', 'Cambria', 'Times New Roman', serif;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  max-width: 72ch;
+}
+.vintage-docs .prose h1,
+.vintage-docs .prose h2,
+.vintage-docs .prose h3,
+.vintage-docs .prose h4 {
+  color: var(--v-ink);
+  font-family: 'Playfair Display', 'Georgia', 'Iowan Old Style',
+               'Palatino Linotype', 'Book Antiqua', serif;
+  letter-spacing: 0.01em;
+}
+.vintage-docs .prose h1 {
+  font-weight: 700;
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+.vintage-docs .prose h2 {
+  font-weight: 700;
+  border-bottom: 3px double var(--v-rule);
+  padding-bottom: 0.35rem;
+  margin-top: 2.5rem;
+}
+.vintage-docs .prose h3 {
+  font-weight: 600;
+  font-style: italic;
+  color: var(--v-ink);
+}
+.vintage-docs .prose > h2 + p::first-letter {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  float: left;
+  font-size: 3.5rem;
+  line-height: 0.9;
+  padding: 0.35rem 0.5rem 0 0;
+  color: var(--v-accent);
+  font-weight: 700;
+}
+.vintage-docs a {
+  color: var(--v-accent);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+}
+.vintage-docs a:hover {
+  color: var(--v-accent-2);
+  text-decoration-style: solid;
+}
+.vintage-docs code {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--v-paper-edge);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  font-family: 'Courier New', 'Courier Prime', 'IBM Plex Mono', monospace;
+  font-size: 0.9em;
+  color: var(--v-ink);
+}
+.dark .vintage-docs code { background: rgba(255,255,255,0.06); }
+.vintage-docs pre {
+  background: #1f1912 !important;
+  color: #f0e3c4 !important;
+  border: 1px solid var(--v-rule);
+  border-radius: 4px;
+  padding: 1rem;
+  font-family: 'Courier New', 'Courier Prime', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+.dark .vintage-docs pre { background: #0e0a06 !important; }
+.vintage-docs .prose table {
+  border-collapse: collapse;
+  border: 1px solid var(--v-rule);
+  font-size: 0.9375rem;
+  width: 100%;
+}
+.vintage-docs .prose th {
+  background: rgba(122, 46, 31, 0.08);
+  border-bottom: 2px solid var(--v-rule);
+  border-left: 1px solid var(--v-rule);
+  border-right: 1px solid var(--v-rule);
+  color: var(--v-ink);
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-weight: 700;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+}
+.dark .vintage-docs .prose th { background: rgba(201, 122, 94, 0.12); }
+.vintage-docs .prose td {
+  border: 1px solid var(--v-rule);
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+}
+.vintage-docs .prose tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+.dark .vintage-docs .prose tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+.vintage-docs .prose blockquote {
+  border-left: 4px double var(--v-accent);
+  color: var(--v-ink-faint);
+  font-style: italic;
+  padding-left: 1rem;
+}
+.vintage-docs .prose hr {
+  border: none;
+  border-top: 1px solid var(--v-rule);
+  border-bottom: 1px solid var(--v-rule);
+  height: 3px;
+  margin: 2rem 0;
+}
+.vintage-docs .not-prose.rounded-xl.border.border-indigo-500\/30 {
+  background: var(--v-paper-2) !important;
+  border: 3px double var(--v-rule) !important;
+  box-shadow: 0 2px 8px rgba(43, 29, 14, 0.1);
+}
+.vintage-docs .not-prose.rounded-xl.border.border-indigo-500\/30 .bg-indigo-600 {
+  background: var(--v-accent) !important;
+  color: var(--v-paper) !important;
+}
+.vintage-docs .not-prose .text-indigo-700,
+.vintage-docs .not-prose .dark\:text-indigo-300 {
+  color: var(--v-accent) !important;
+  letter-spacing: 0.12em;
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+.vintage-docs .sticky.top-14,
+.vintage-docs .sticky.top-16 {
+  background: rgba(244, 236, 216, 0.92) !important;
+  border-bottom: 1px solid var(--v-rule) !important;
+  backdrop-filter: blur(6px);
+}
+.dark .vintage-docs .sticky.top-14,
+.dark .vintage-docs .sticky.top-16 {
+  background: rgba(26, 20, 16, 0.92) !important;
+}
+@media print {
+  .vintage-docs { background: #fff !important; color: #000 !important; }
+  .vintage-docs .sticky { display: none !important; }
+  .vintage-docs pre { background: #f4f4f4 !important; color: #000 !important; }
+}

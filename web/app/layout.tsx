@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Noto_Sans_Bengali } from 'next/font/google';
+import { Inter, Noto_Sans_Bengali, Playfair_Display, Courier_Prime } from 'next/font/google';
 import './globals.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { Toaster } from 'sonner';
@@ -20,6 +20,19 @@ const notoBengali = Noto_Sans_Bengali({
   subsets: ['bengali'],
   variable: '--font-bengali',
   weight: ['400', '500', '600', '700'],
+  display: 'swap',
+});
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['600', '700', '900'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
+
+const courier = Courier_Prime({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-courier',
   display: 'swap',
 });
 
