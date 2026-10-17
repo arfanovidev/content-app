@@ -6,16 +6,6 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Response time middleware
-  app.use((req: any, res: any, next: any) => {
-    const start = Date.now();
-    res.on('finish', () => {
-      const duration = Date.now() - start;
-      res.setHeader('X-Response-Time', `${duration}ms`);
-    });
-    next();
-  });
-
   app.enableCors({
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
     credentials: true,
