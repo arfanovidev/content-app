@@ -53,33 +53,33 @@ export default function ProjectProposalPart2Page() {
 
           <h3>14.1 High-Level Architecture</h3>
           <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs">
-{`â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  Client (Browser)                          â”‚
-â”‚  Next.js 16 + Tailwind CSS                 â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                 â”‚ HTTPS / JWT
-                 â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  REST API Backend                          â”‚
-â”‚  NestJS 12 + TypeScript                    â”‚
-â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”‚
-â”‚  â”‚ Auth Module (JWT, bcrypt)            â”‚ â”‚
-â”‚  â”‚ Contents Module (CRUD)               â”‚ â”‚
-â”‚  â”‚ Categories Module (CRUD)             â”‚ â”‚
-â”‚  â”‚ Completed Module (progress)          â”‚ â”‚
-â”‚  â”‚ Votes Module (upvote/downvote)       â”‚ â”‚
-â”‚  â”‚ Weather Module (OpenWeather API)     â”‚ â”‚
-â”‚  â”‚ Upload Module (image upload)         â”‚ â”‚
-â”‚  â”‚ Drive Module (Google Drive API)      â”‚ â”‚
-â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                 â”‚ Google Drive API
-                 â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  Storage (Google Drive)                    â”‚
-â”‚  contents.json, categories.json,           â”‚
-â”‚  users.json, completed.json, votes.json    â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜`}
+{`â”Œ────────────────────────────────────────────┐
+│  Client (Browser)                          │
+│  Next.js 16 + Tailwind CSS                 │
+└────────────────┬───────────────────────────┘
+                 │ HTTPS / JWT
+                 ▼
+â”Œ────────────────────────────────────────────┐
+│  REST API Backend                          │
+│  NestJS 12 + TypeScript                    │
+│  â”Œ──────────────────────────────────────┐ │
+│  │ Auth Module (JWT, bcrypt)            │ │
+│  │ Contents Module (CRUD)               │ │
+│  │ Categories Module (CRUD)             │ │
+│  │ Completed Module (progress)          │ │
+│  │ Votes Module (upvote/downvote)       │ │
+│  │ Weather Module (OpenWeather API)     │ │
+│  │ Upload Module (image upload)         │ │
+│  │ Drive Module (Google Drive API)      │ │
+│  └──────────────────────────────────────┘ │
+└────────────────┬───────────────────────────┘
+                 │ Google Drive API
+                 ▼
+â”Œ────────────────────────────────────────────┐
+│  Storage (Google Drive)                    │
+│  contents.json, categories.json,           │
+│  users.json, completed.json, votes.json    │
+└────────────────────────────────────────────┘`}
           </pre>
 
           <h3>14.2 Frontend Layer</h3>
