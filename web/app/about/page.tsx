@@ -15,8 +15,8 @@ import {
   Headphones,
   Languages,
   ArrowRight,
-  Github,
-  Linkedin,
+  Code2,
+  Briefcase,
 } from 'lucide-react';
 
 const STATS = [
@@ -35,7 +35,7 @@ const VALUES = [
   {
     icon: Languages,
     title: 'Bilingual by design',
-    desc: 'Every story is written and available in English and বাংলা — not auto-translated.',
+    desc: 'Every story is written and available in English and à¦¬à¦¾à¦‚à¦²à¦¾ â€” not auto-translated.',
   },
   {
     icon: Headphones,
@@ -63,7 +63,7 @@ const TIMELINE = [
   {
     year: '2026 Q3',
     title: 'Public launch',
-    desc: 'Content App went live — free for everyone, no sign-up wall on public stories.',
+    desc: 'Content App went live â€” free for everyone, no sign-up wall on public stories.',
   },
   {
     year: 'Next',
@@ -76,12 +76,12 @@ const FEATURES = [
   {
     icon: Globe,
     title: 'Two languages',
-    desc: 'English and বাংলা side-by-side. Switch anytime with one click.',
+    desc: 'English and à¦¬à¦¾à¦‚à¦²à¦¾ side-by-side. Switch anytime with one click.',
   },
   {
     icon: Headphones,
     title: 'Text to speech',
-    desc: 'Natural voice reading in both languages — perfect for multi-tasking.',
+    desc: 'Natural voice reading in both languages â€” perfect for multi-tasking.',
   },
   {
     icon: PenTool,
@@ -133,9 +133,9 @@ export default function AboutPage() {
             </h1>
 
             <p className="mt-5 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Content App is a quiet corner of the internet — no ads, no
+              Content App is a quiet corner of the internet â€” no ads, no
               tracking, no algorithmic noise. Just carefully chosen stories in
-              English and বাংলা, built to be read, understood, and remembered.
+              English and à¦¬à¦¾à¦‚à¦²à¦¾, built to be read, understood, and remembered.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -187,7 +187,7 @@ export default function AboutPage() {
             <p>
               The web has become loud. Every article is wrapped in autoplay
               videos, pop-ups, cookie banners, and three different ad networks.
-              We got tired of it — so we built something else.
+              We got tired of it â€” so we built something else.
             </p>
 
             <p>
@@ -202,7 +202,7 @@ export default function AboutPage() {
               We&apos;re built and maintained by{' '}
               <strong className="text-foreground">Dacca Solution</strong>, a
               small team based in Dhaka, Bangladesh. We&apos;re not a startup
-              chasing scale — we&apos;re readers who wanted a better reading
+              chasing scale â€” we&apos;re readers who wanted a better reading
               experience and decided to make one.
             </p>
 
@@ -322,7 +322,7 @@ export default function AboutPage() {
             Made by people
           </h2>
           <p className="mx-auto mt-2 max-w-md text-center text-sm text-muted-foreground">
-            A small team based in Dhaka — with a lot of help from readers.
+            A small team based in Dhaka â€” with a lot of help from readers.
           </p>
 
           <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -344,7 +344,7 @@ export default function AboutPage() {
                   aria-label="GitHub"
                   className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
-                  <Github className="h-4 w-4" />
+                  <Code2 className="h-4 w-4" />
                 </a>
                 <a
                   href="https://linkedin.com"
@@ -353,7 +353,7 @@ export default function AboutPage() {
                   aria-label="LinkedIn"
                   className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
-                  <Linkedin className="h-4 w-4" />
+                  <Briefcase className="h-4 w-4" />
                 </a>
               </div>
             </div>
