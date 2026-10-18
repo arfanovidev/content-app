@@ -10,8 +10,9 @@ import { Menu, X } from 'lucide-react';
 const LINKS = [
   { key: 'home', href: '/' },
   { key: 'favorites', href: '/favorites' },
-  { key: 'blog', href: '/donate' },
+  { key: 'blog', href: '/blog' },
   { key: 'about', href: '/about' },
+  { key: 'donate', href: '/donate' },
 ];
 
 export function MobileMenu() {

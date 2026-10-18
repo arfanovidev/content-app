@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { API_ENDPOINTS } from '@/lib/constants';
@@ -48,21 +48,22 @@ function saveCoords(coords: Coords) {
 }
 
 export function useWeather() {
-  const [coords, setCoords] = useState<Coords | null>(null);
+  // Start with cached or default coords — NO geolocation on page load
+  const [coords, setCoords] = useState<Coords>(DEFAULT_COORDS);
   const [locationDenied, setLocationDenied] = useState(false);
 
   useEffect(() => {
     const cached = loadCachedCoords();
     if (cached) {
       setCoords(cached);
-      return;
     }
+  }, []);
 
+  const requestLocation = useCallback(() => {
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
-      setCoords(DEFAULT_COORDS);
+      setLocationDenied(true);
       return;
     }
-
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const next = {
@@ -71,31 +72,32 @@ export function useWeather() {
         };
         saveCoords(next);
         setCoords(next);
+        setLocationDenied(false);
       },
       () => {
         setLocationDenied(true);
-        setCoords(DEFAULT_COORDS);
       },
       { timeout: 10000, maximumAge: CACHE_TTL },
     );
   }, []);
 
   const query = useQuery({
-    queryKey: ['weather', coords?.lat, coords?.lon],
+    queryKey: ['weather', coords.lat, coords.lon],
     queryFn: async () => {
-      if (!coords) return null;
       const res = await api.get<WeatherResponse>(
         `${API_ENDPOINTS.WEATHER}?lat=${coords.lat}&lon=${coords.lon}`,
       );
       return res.data;
     },
-    enabled: !!coords,
     staleTime: 10 * 60 * 1000,
+    retry: false,
+    enabled: process.env.NEXT_PUBLIC_DISABLE_WEATHER !== 'true',
   });
 
   return {
     ...query,
     locationDenied,
-    hasCoords: !!coords,
+    hasCoords: true,
+    requestLocation,
   };
 }

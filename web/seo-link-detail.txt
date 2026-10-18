@@ -1,0 +1,35 @@
+﻿{
+    "id":  "link-text",
+    "title":  "Links do not have descriptive text",
+    "description":  "Descriptive link text helps search engines understand your content. [Learn how to make links more accessible](https://developer.chrome.com/docs/lighthouse/seo/link-text/).",
+    "score":  0,
+    "scoreDisplayMode":  "binary",
+    "displayValue":  "2 links found",
+    "details":  {
+                    "type":  "table",
+                    "headings":  [
+                                     {
+                                         "key":  "href",
+                                         "valueType":  "url",
+                                         "label":  "Link destination"
+                                     },
+                                     {
+                                         "key":  "text",
+                                         "valueType":  "text",
+                                         "label":  "Link Text"
+                                     }
+                                 ],
+                    "items":  [
+                                  {
+                                      "href":  "http://localhost:3000/about",
+                                      "text":  "Learn more",
+                                      "textLang":  "en"
+                                  },
+                                  {
+                                      "href":  "http://localhost:3000/about",
+                                      "text":  "Learn more",
+                                      "textLang":  "en"
+                                  }
+                              ]
+                }
+}

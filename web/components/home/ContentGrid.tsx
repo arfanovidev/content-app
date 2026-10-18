@@ -1,5 +1,6 @@
-'use client';
+﻿'use client';
 
+import { useMemo } from 'react';
 import { useContents } from '@/hooks/useContents';
 import { useCategories } from '@/hooks/useCategories';
 import { ContentCard } from './ContentCard';
@@ -8,11 +9,27 @@ import { EmptyState } from './EmptyState';
 
 interface ContentGridProps {
   categoryId: string | null;
+  searchQuery?: string;
 }
 
-export function ContentGrid({ categoryId }: ContentGridProps) {
+function textOf(v: { en: string; bn: string } | undefined | null): string {
+  if (!v) return '';
+  return `${v.en ?? ''} ${v.bn ?? ''}`;
+}
+
+export function ContentGrid({ categoryId, searchQuery = '' }: ContentGridProps) {
   const { data: contents, isLoading, isError } = useContents(categoryId ?? undefined);
   const { data: categories } = useCategories();
+
+  const filtered = useMemo(() => {
+    if (!contents) return [];
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return contents;
+    return contents.filter((c) => {
+      const blob = (textOf(c.title) + ' ' + textOf(c.shortDescription)).toLowerCase();
+      return blob.includes(q);
+    });
+  }, [contents, searchQuery]);
 
   if (isLoading || isError) {
     return (
@@ -28,11 +45,19 @@ export function ContentGrid({ categoryId }: ContentGridProps) {
     return <EmptyState />;
   }
 
+  if (filtered.length === 0) {
+    return (
+      <div className="py-12 text-center text-muted-foreground">
+        No results for "{searchQuery}"
+      </div>
+    );
+  }
+
   const categoryMap = new Map(categories?.map((c) => [c.id, c]) ?? []);
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {contents.map((content, index) => (
+      {filtered.map((content, index) => (
         <ContentCard
           key={content.id}
           content={content}

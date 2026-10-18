@@ -12,6 +12,8 @@ import {
 import { useWeather } from '@/hooks/useWeather';
 import { WeatherSkeleton } from './WeatherSkeleton';
 
+const DISABLED = process.env.NEXT_PUBLIC_DISABLE_WEATHER === 'true';
+
 function pickIcon(iconCode?: string) {
   if (!iconCode) return Cloud;
   const code = iconCode.slice(0, 2);
@@ -36,6 +38,8 @@ function pickIcon(iconCode?: string) {
 }
 
 export function WeatherWidget() {
+  if (DISABLED) return null;
+
   const { data, isLoading, isError, hasCoords } = useWeather();
   const [mounted, setMounted] = useState(false);
 
@@ -43,13 +47,9 @@ export function WeatherWidget() {
     setMounted(true);
   }, []);
 
-  if (!mounted || isLoading || !hasCoords) {
-    return <WeatherSkeleton />;
-  }
-
-  if (isError || !data) {
-    return null;
-  }
+  if (!mounted) return <WeatherSkeleton />;
+  if (isLoading) return <WeatherSkeleton />;
+  if (isError || !hasCoords || !data) return null;
 
   const Icon = pickIcon(data.icon);
   const temp = Math.round(data.temperature);

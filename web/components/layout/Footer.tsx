@@ -68,7 +68,7 @@ export function Footer() {
 
             {/* Brand mark — two-line stacked, tiny */}
             <span className="flex flex-col leading-none">
-              <span className="text-[8px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/70">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                 Dacca
               </span>
               <span className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.15em] bg-gradient-to-r from-indigo-600 to-rose-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-rose-400">
@@ -78,7 +78,7 @@ export function Footer() {
           </a>
 
           {/* Right side: copyright */}
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50">
+          <p className="text-[11px] uppercase tracking-widest text-muted-foreground">
             {t('copyright', { year: currentYear })}
           </p>
         </div>
