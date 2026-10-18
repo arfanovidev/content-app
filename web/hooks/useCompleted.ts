@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { API_ENDPOINTS } from '@/lib/constants';
-import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/authStore';
 
 export interface CompletedRecord {
   id: string;
@@ -14,18 +14,16 @@ export interface CompletedRecord {
 }
 
 export function useCompleted() {
-  const userKey = useUserStore((s) => s.userKey);
+  const isAuth = useAuthStore((s) => s.isAuthenticated());
+  const userId = useAuthStore((s) => s.user?.id);
 
   return useQuery({
-    queryKey: ['completed', userKey],
+    queryKey: ['completed', userId],  // ← user-specific cache
     queryFn: async () => {
-      if (!userKey) return [];
-      const res = await api.get<CompletedRecord[]>(
-        `${API_ENDPOINTS.COMPLETED}?userKey=${userKey}`,
-      );
+      const res = await api.get<CompletedRecord[]>(API_ENDPOINTS.COMPLETED);
       return res.data;
     },
-    enabled: !!userKey,
+    enabled: !!isAuth,  // ← only fetch if logged in
     staleTime: 30 * 1000,
   });
 }

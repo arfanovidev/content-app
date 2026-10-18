@@ -38,7 +38,20 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: () => !!get().token,
       isAdmin: () => get().user?.role === 'admin',
       setAuth: (user, token) => set({ user, token }),
-      logout: () => set({ user: null, token: null }),
+      logout: () => {
+        set({ user: null, token: null });
+        // Clear all user-specific data
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('user-store');
+          localStorage.removeItem('completed-store');
+          // Optionally clear user-specific query cache
+          try {
+            // Lazy import to avoid circular dependency
+            const { useCompletedStore } = require('@/store/completedStore');
+            useCompletedStore.getState().reset?.();
+          } catch {}
+        }
+      },
       openSignup: () => set({ signupModalOpen: true }),
       closeSignup: () => set({ signupModalOpen: false }),
       setHasHydrated: (v) => set({ _hasHydrated: v }),

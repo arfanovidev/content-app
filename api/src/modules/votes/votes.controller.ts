@@ -1,15 +1,17 @@
-﻿import {
+import {
   Controller,
   Get,
   Post,
   Body,
   Param,
-  Query,
+  UseGuards,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
 import { VotesService } from './votes.service';
 import { CreateVoteDto } from './dto/create-vote.dto';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @Controller('votes')
 export class VotesController {
@@ -17,8 +19,15 @@ export class VotesController {
 
   @Post()
   @HttpCode(HttpStatus.OK)
-  async vote(@Body() dto: CreateVoteDto) {
-    return this.votesService.vote(dto);
+  @UseGuards(JwtAuthGuard)
+  async vote(
+    @Body() dto: CreateVoteDto,
+    @CurrentUser() user: any,
+  ) {
+    return this.votesService.vote({
+      ...dto,
+      userKey: user.userId,
+    });
   }
 
   @Get('user/:userKey')
@@ -27,15 +36,7 @@ export class VotesController {
   }
 
   @Get(':contentId')
-  async getTally(
-    @Param('contentId') contentId: string,
-    @Query('userKey') userKey?: string,
-  ) {
-    const tally = await this.votesService.getTally(contentId);
-    if (userKey) {
-      const userVote = await this.votesService.getUserVote(contentId, userKey);
-      return { ...tally, userVote: userVote.value };
-    }
-    return tally;
+  async getTally(@Param('contentId') contentId: string) {
+    return this.votesService.getTally(contentId);
   }
 }

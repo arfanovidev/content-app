@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { API_ENDPOINTS } from '@/lib/constants';
-import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/authStore';
 
 export interface VoteTally {
   contentId: string;
@@ -14,15 +14,14 @@ export interface VoteTally {
 }
 
 export function useVoteTally(contentId: string) {
-  const userKey = useUserStore((s) => s.userKey);
+  const isAuth = useAuthStore((s) => s.isAuthenticated());
+  const userId = useAuthStore((s) => s.user?.id);
 
   return useQuery({
-    queryKey: ['vote', contentId, userKey],
+    queryKey: ['vote', contentId, userId],
     queryFn: async () => {
-      const url = userKey
-        ? `${API_ENDPOINTS.VOTES_TALLY(contentId)}?userKey=${userKey}`
-        : API_ENDPOINTS.VOTES_TALLY(contentId);
-      const res = await api.get<VoteTally>(url);
+      // JWT header identifies user — no query param needed
+      const res = await api.get<VoteTally>(API_ENDPOINTS.VOTES_TALLY(contentId));
       return res.data;
     },
     enabled: !!contentId,
@@ -31,8 +30,8 @@ export function useVoteTally(contentId: string) {
 }
 
 export function useCastVote() {
-  const userKey = useUserStore((s) => s.userKey);
   const queryClient = useQueryClient();
+  const userId = useAuthStore((s) => s.user?.id);
 
   return useMutation({
     mutationFn: async ({
@@ -42,16 +41,16 @@ export function useCastVote() {
       contentId: string;
       value: 1 | -1;
     }) => {
+      // No userKey — JWT identifies voter
       const res = await api.post<VoteTally>(API_ENDPOINTS.VOTES, {
         contentId,
-        userKey,
         value,
       });
       return res.data;
     },
     onSuccess: (data, variables) => {
       queryClient.setQueryData(
-        ['vote', variables.contentId, userKey],
+        ['vote', variables.contentId, userId],
         (old: VoteTally | undefined) => ({
           ...data,
           userVote: data.userVote ?? 0,

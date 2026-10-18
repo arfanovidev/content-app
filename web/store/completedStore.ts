@@ -13,6 +13,7 @@ interface CompletedState {
   isCompleted: (contentId: string) => boolean;
   markCompleted: (contentId: string) => void;
   removeCompleted: (contentId: string) => void;
+  reset: () => void;
 }
 
 export const useCompletedStore = create<CompletedState>()(
@@ -39,6 +40,7 @@ export const useCompletedStore = create<CompletedState>()(
             (c) => c.contentId !== contentId,
           ),
         })),
+      reset: () => set({ completed: [] }),
     }),
     { name: 'completed-store' },
   ),
