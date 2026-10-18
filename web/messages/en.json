@@ -371,5 +371,63 @@
     "favorites": "Favorites",
     "completed": "Completed",
     "settings": "Settings"
+  },
+  "rules": {
+    "back": "Back to home",
+    "title": "Community Rules",
+    "subtitle": "Guidelines for a respectful community",
+    "intro": "Four principles that keep Content App a calm, honest place to read.",
+    "rules": {
+      "kindTitle": "Be kind",
+      "kindDesc": "Assume good faith. Disagree with ideas, never attack people. Slurs and personal attacks are not allowed.",
+      "valueTitle": "Add value",
+      "valueDesc": "Comments should add something — a question, a counterpoint, a useful link. Spam will be removed.",
+      "honestTitle": "Be honest",
+      "honestDesc": "Don't plagiarize. Credit sources. If you use AI to help write, review and edit before publishing.",
+      "respectTitle": "Respect privacy",
+      "respectDesc": "Don't share others' personal information without permission. Screenshots of private messages are not allowed."
+    },
+    "ctaTitle": "Read with care",
+    "ctaSubtitle": "A calm reading community starts with each of us.",
+    "ctaButton": "Browse stories"
+  },
+  "store": {
+    "back": "Back to home",
+    "title": "Store",
+    "subtitle": "Merchandise and digital products — coming soon",
+    "comingSoon": "Opening soon",
+    "products": {
+      "mugName": "Ceramic mug",
+      "mugDesc": "Simple matte black mug for slow mornings.",
+      "tshirtName": "T-shirt",
+      "tshirtDesc": "100% cotton, minimal logo on chest.",
+      "notebookName": "Notebook",
+      "notebookDesc": "160 pages, dot grid, perfect for notes."
+    },
+    "ctaTitle": "Be the first to know",
+    "ctaSubtitle": "We'll open the store soon. Follow along.",
+    "ctaButton": "Get notified"
+  },
+  "status": {
+    "back": "Back to home",
+    "title": "System Status",
+    "allOperational": "All systems operational",
+    "lastChecked": "Last checked just now · Timezone GMT+6",
+    "currentStatus": "Current status",
+    "operational": "Operational",
+    "uptime90": "90-day uptime",
+    "daysAgo": "90 days ago",
+    "today": "Today",
+    "pastIncidents": "Past incidents",
+    "noIncidents": "All systems operational",
+    "noIncidentsDesc": "No incidents in the last 30 days.",
+    "realTimeMonitoring": "Real-time monitoring",
+    "monitoringDesc": "We monitor the site every 5 minutes. Downtime typically resolved within 15 minutes.",
+    "services": {
+      "webApp": "Web App",
+      "api": "API Server",
+      "storage": "Storage",
+      "tts": "Text-to-speech"
+    }
   }
 }

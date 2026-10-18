@@ -68,7 +68,13 @@ export interface VoteTally {
 export interface LoginResponse {
   accessToken: string;
   user: {
+    id?: string;
+    sub?: string;
     username: string;
-    role: string;
+    email?: string;
+    role: 'admin' | 'user' | string;
+    provider?: string;
+    avatar?: string;
+    picture?: string;
   };
 }

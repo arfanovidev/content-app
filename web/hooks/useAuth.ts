@@ -26,16 +26,25 @@ export function useLogin() {
       return res.data;
     },
     onSuccess: (data) => {
+      const role = (data.user?.role as 'admin' | 'user') || 'user';
+
       setAuth(
         {
-          id: data.user?.username ?? 'user',
-          username: data.user?.username ?? 'admin',
+          id: data.user?.id ?? data.user?.username ?? 'user',
+          username: data.user?.username ?? 'user',
+          email: data.user?.email,
+          role,
           provider: 'email',
         },
         data.accessToken
       );
       queryClient.clear();
-      router.push(ROUTES.ADMIN);
+
+      if (role === 'admin') {
+        router.push(ROUTES.ADMIN);
+      } else {
+        router.push(ROUTES.HOME);
+      }
     },
   });
 }
@@ -48,6 +57,6 @@ export function useLogout() {
   return () => {
     logout();
     queryClient.clear();
-    router.push(ROUTES.ADMIN_LOGIN);
+    router.push(ROUTES.HOME);
   };
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { X, Mail, Briefcase, Users, Loader2 } from 'lucide-react';
+import { X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -60,6 +60,7 @@ export function SignupModal() {
                 username: data.user?.username ?? 'user',
                 email: data.user?.email,
                 avatar: data.user?.picture,
+                role: (data.user?.role as 'admin' | 'user') || 'user',
                 provider: 'google',
               },
               data.accessToken,
@@ -108,11 +109,15 @@ export function SignupModal() {
           username: email || username,
           password,
         });
+
+        const backendRole = (res.data.user?.role as 'admin' | 'user') || 'user';
+
         setAuth(
           {
             id: res.data.user?.id ?? res.data.user?.username ?? 'user',
             username: res.data.user?.username ?? email.split('@')[0],
             email: res.data.user?.email ?? email,
+            role: backendRole,
             provider: 'email',
           },
           res.data.accessToken,
@@ -129,6 +134,7 @@ export function SignupModal() {
             id: res.data.user?.id ?? res.data.user?.username ?? 'user',
             username: res.data.user?.username ?? username,
             email: res.data.user?.email ?? email,
+            role: 'user',
             provider: 'email',
           },
           res.data.accessToken,

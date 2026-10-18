@@ -6,11 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useLogin } from '@/hooks/useAuth';
 import { useMessages } from '@/hooks/useMessages';
+import { useAuthStore } from '@/store/authStore';
 import { showSuccess, showError } from '@/lib/toast';
 
 export function LoginForm() {
   const t = useMessages();
   const login = useLogin();
+  const setAuth = useAuthStore((s) => s.setAuth);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -21,7 +23,17 @@ export function LoginForm() {
     login.mutate(
       { username, password },
       {
-        onSuccess: () => {
+        onSuccess: (data: any) => {
+          setAuth(
+            {
+              id: data.user.id || data.user.username,
+              username: data.user.username,
+              email: data.user.email,
+              role: (data.user.role as 'admin' | 'user') || 'user',
+              provider: 'email',
+            },
+            data.accessToken
+          );
           showSuccess('Welcome back!', 'You are now signed in.');
         },
         onError: (err: any) => {

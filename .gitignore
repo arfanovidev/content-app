@@ -62,3 +62,43 @@ api/seed-*.js
 api/shorten-*.js
 api/quick-*.js
 api/revert-*.js
+
+# ========== Build cache ==========
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# ========== One-off scripts ==========
+web/patch-*.py
+web/fix-*.py
+web/shorten-*.js
+web/cleanup-*.js
+*.bak
+
+# ========== ISD report (separate project) ==========
+isd-report/
+
+# ========== Build cache ==========
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# ========== One-off scripts ==========
+web/patch-*.py
+web/fix-*.py
+web/shorten-*.js
+web/cleanup-*.js
+*.bak
+
+# ========== ISD report ==========
+isd-report/
+
+# Build cache
+*.tsbuildinfo
+
+# One-off scripts  
+web/patch-*.py
+web/fix-*.py
+web/shorten-*.js
+*.bak
+
+# ISD report
+isd-report/

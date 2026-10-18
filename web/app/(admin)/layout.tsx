@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 
 export default function AdminLayout({
@@ -10,26 +10,32 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const user = useAuthStore((s) => s.user);
   const isAuth = useAuthStore((s) => s.isAuthenticated());
   const hydrated = useAuthStore((s) => s._hasHydrated);
 
+  const isLoginPage = pathname === '/admin/login';
+
   useEffect(() => {
     if (!hydrated) return;
+    if (isLoginPage) return;
 
-    // Not logged in → redirect to signup/home
     if (!isAuth) {
-      router.replace('/');
+      router.replace('/admin/login');
       return;
     }
 
-    // Logged in but not admin → redirect to user dashboard
-    if (user?.username !== 'admin') {
-      router.replace('/user');
+    if (user?.role !== 'admin') {
+      router.replace('/');
     }
-  }, [hydrated, isAuth, user, router]);
+  }, [hydrated, isAuth, user, router, isLoginPage]);
 
-  if (!hydrated || !isAuth || user?.username !== 'admin') {
+  if (isLoginPage) {
+    return <div className="min-h-screen">{children}</div>;
+  }
+
+  if (!hydrated || !isAuth || user?.role !== 'admin') {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
