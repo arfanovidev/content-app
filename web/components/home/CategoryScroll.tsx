@@ -1,9 +1,9 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { useCategories } from '@/hooks/useCategories';
-import { useLangStore } from '@/store/langStore';
-import { useMessages } from '@/hooks/useMessages';
+import { pickText } from '@/lib/format';
 import { CategoryChip } from './CategoryChip';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -14,11 +14,10 @@ interface CategoryScrollProps {
 
 export function CategoryScroll({ selectedId, onSelect }: CategoryScrollProps) {
   const { data: categories, isLoading, isError } = useCategories();
-  const lang = useLangStore((s) => s.lang);
-  const t = useMessages();
+  const locale = useLocale() as 'en' | 'bn';
+  const t = useTranslations('home');
   const scrollerRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to selected chip on mount/change
   useEffect(() => {
     if (!selectedId || !scrollerRef.current) return;
     const el = scrollerRef.current.querySelector<HTMLElement>(
@@ -31,10 +30,7 @@ export function CategoryScroll({ selectedId, onSelect }: CategoryScrollProps) {
     return (
       <div className="scrollbar-hide flex gap-1.5 overflow-x-auto py-1">
         {[1, 2, 3, 4, 5].map((i) => (
-          <Skeleton
-            key={i}
-            className="h-7 w-16 shrink-0 rounded-full bg-muted/60"
-          />
+          <Skeleton key={i} className="h-7 w-16 shrink-0 rounded-full bg-muted/60" />
         ))}
       </div>
     );
@@ -44,24 +40,15 @@ export function CategoryScroll({ selectedId, onSelect }: CategoryScrollProps) {
 
   return (
     <div className="relative">
-      {/* right fade mask */}
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-background to-transparent" />
-      {/* left fade mask */}
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-background to-transparent" />
 
       <div
         ref={scrollerRef}
-        className="
-          scrollbar-hide
-          flex gap-1.5 overflow-x-auto
-          px-1 py-1
-          snap-x snap-mandatory
-          scroll-smooth
-          [-webkit-overflow-scrolling:touch]
-        "
+        className="scrollbar-hide flex gap-1.5 overflow-x-auto px-1 py-1 snap-x snap-mandatory scroll-smooth [-webkit-overflow-scrolling:touch]"
       >
         <CategoryChip
-          label={t.home.all}
+          label={t('all')}
           active={selectedId === null}
           onClick={() => onSelect(null)}
           dataId="__all__"
@@ -70,12 +57,11 @@ export function CategoryScroll({ selectedId, onSelect }: CategoryScrollProps) {
           <CategoryChip
             key={cat.id}
             dataId={cat.id}
-            label={cat.name[lang]}
+            label={pickText(cat.name, locale)}
             active={selectedId === cat.id}
             onClick={() => onSelect(cat.id)}
           />
         ))}
-        {/* end spacer */}
         <span className="shrink-0 w-2" aria-hidden />
       </div>
     </div>

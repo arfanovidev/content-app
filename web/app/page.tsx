@@ -12,35 +12,26 @@ export default function HomePage() {
   const isAuth = useAuthStore((s) => s.isAuthenticated());
   const hydrated = useAuthStore((s) => s._hasHydrated);
 
-  // ⏳ Wait for store hydration (avoids flicker)
   if (!hydrated) {
     return <HomeSkeleton />;
   }
 
   return (
     <div className="min-h-screen">
-      {/* Hero — show only when NOT authenticated */}
+      {/* Hero for guest + logged-out users */}
       {!isAuth && <HeroHeader />}
 
-      {/* Content — show only when authenticated */}
-      {isAuth ? (
-        <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6">
-          <div className="sticky top-14 z-30 -mx-4 mb-4 border-b border-border/60 bg-background/90 px-4 py-2 backdrop-blur-md sm:-mx-6 sm:top-16 sm:px-6">
-            <CategoryScroll
-              selectedId={selectedCategory}
-              onSelect={setSelectedCategory}
-            />
-          </div>
+      {/* Content grid — visible to EVERYONE (guest + auth) */}
+      <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6">
+        <div className="sticky top-14 z-30 -mx-4 mb-4 border-b border-border/60 bg-background/90 px-4 py-2 backdrop-blur-md sm:-mx-6 sm:top-16 sm:px-6">
+          <CategoryScroll
+            selectedId={selectedCategory}
+            onSelect={setSelectedCategory}
+          />
+        </div>
 
-          <ContentGrid categoryId={selectedCategory} />
-        </div>
-      ) : (
-        <div className="container mx-auto max-w-6xl px-4 py-16 text-center sm:px-6">
-          <p className="text-sm text-muted-foreground">
-            Sign up to explore stories and categories.
-          </p>
-        </div>
-      )}
+        <ContentGrid categoryId={selectedCategory} />
+      </div>
     </div>
   );
 }

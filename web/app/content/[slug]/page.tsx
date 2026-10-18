@@ -2,9 +2,9 @@
 
 import { use } from 'react';
 import Image from 'next/image';
+import { useLocale } from 'next-intl';
 import { useContent } from '@/hooks/useContent';
 import { useCategories } from '@/hooks/useCategories';
-import { useLangStore } from '@/store/langStore';
 import { pickText, normalizeImageUrl } from '@/lib/format';
 import { BackButton } from '@/components/details/BackButton';
 import { DetailsHeader } from '@/components/details/DetailsHeader';
@@ -22,14 +22,14 @@ export default function ContentPage({ params }: PageProps) {
   const { slug } = use(params);
   const { data: content, isLoading, isError } = useContent(slug);
   const { data: categories } = useCategories();
-  const lang = useLangStore((s) => s.lang);
+  const locale = useLocale() as 'en' | 'bn';
 
   if (isLoading || isError || !content) {
     return <DetailsSkeleton />;
   }
 
   const category = categories?.find((c) => c.id === content.categoryId);
-  const title = pickText(content.title, lang);
+  const title = pickText(content.title, locale);
   const imageUrl = normalizeImageUrl(content.coverImage);
 
   return (
@@ -67,15 +67,13 @@ export default function ContentPage({ params }: PageProps) {
 }
 
 function AudioBar({ content }: { content: Content }) {
-  const lang = useLangStore((s) => s.lang);
+  const locale = useLocale() as 'en' | 'bn';
 
-  // Pick delta by UI lang
   const delta =
-    lang === 'bn'
+    locale === 'bn'
       ? content.quillDeltaBn || content.quillDeltaEn || content.quillDelta
       : content.quillDeltaEn || content.quillDeltaBn || content.quillDelta;
 
-  // Extract plain text from article delta
   const articleText = delta?.ops?.length
     ? delta.ops
         .filter((op: any) => typeof op.insert === 'string')
@@ -84,12 +82,11 @@ function AudioBar({ content }: { content: Content }) {
         .trim()
     : '';
 
-  // TTS text = article text first, fallback to title
-  const text = articleText || pickText(content.title, lang);
+  const text = articleText || pickText(content.title, locale);
 
   const tts = useTTS({
     text,
-    lang,
+    lang: locale,
   });
 
   const handlePlay = () => {

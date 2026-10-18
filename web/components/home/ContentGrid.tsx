@@ -14,11 +14,10 @@ export function ContentGrid({ categoryId }: ContentGridProps) {
   const { data: contents, isLoading, isError } = useContents(categoryId ?? undefined);
   const { data: categories } = useCategories();
 
-  // ✅ Server down / fetching / error — সব ক্ষেত্রে infinite skeleton
   if (isLoading || isError) {
     return (
-      <div className="grid grid-cols-1 gap-4">
-        {[1, 2, 3, 4].map((i) => (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
           <CardSkeleton key={i} />
         ))}
       </div>
@@ -32,7 +31,7 @@ export function ContentGrid({ categoryId }: ContentGridProps) {
   const categoryMap = new Map(categories?.map((c) => [c.id, c]) ?? []);
 
   return (
-    <div className="grid grid-cols-1 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {contents.map((content, index) => (
         <ContentCard
           key={content.id}

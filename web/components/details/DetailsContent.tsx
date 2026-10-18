@@ -1,9 +1,9 @@
 'use client';
 
+import { useLocale } from 'next-intl';
 import { useReadingTimer } from '@/hooks/useReadingTimer';
 import { useCompleteContent } from '@/hooks/useCompleteContent';
 import { useCompletedStore } from '@/store/completedStore';
-import { useLangStore } from '@/store/langStore';
 import { ContentRenderer } from './ContentRenderer';
 import { CompleteButton } from './CompleteButton';
 import { pickText } from '@/lib/format';
@@ -14,7 +14,7 @@ interface DetailsContentProps {
 }
 
 export function DetailsContent({ content }: DetailsContentProps) {
-  const lang = useLangStore((s) => s.lang);
+  const locale = useLocale() as 'en' | 'bn';
   const isCompleted = useCompletedStore((s) => s.isCompleted(content.id));
 
   const timer = useReadingTimer(content.id, content.readTime);
@@ -29,14 +29,14 @@ export function DetailsContent({ content }: DetailsContentProps) {
 
   // Pick delta by UI language with fallback chain
   const delta =
-    lang === 'bn'
+    locale === 'bn'
       ? content.quillDeltaBn || content.quillDeltaEn || content.quillDelta
       : content.quillDeltaEn || content.quillDeltaBn || content.quillDelta;
 
   const hasDelta =
     delta?.ops && Array.isArray(delta.ops) && delta.ops.length > 0;
 
-  const fallbackText = pickText(content.shortDescription, lang);
+  const fallbackText = pickText(content.shortDescription, locale);
 
   return (
     <div className="space-y-6">
