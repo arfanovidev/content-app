@@ -4,19 +4,24 @@ import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import { Globe } from 'lucide-react';
+import { useLangStore } from '@/store/langStore';
 
 export function LanguageSwitcher() {
   const locale = useLocale();
   const router = useRouter();
+  const setLang = useLangStore((s) => s.setLang);
   const [isPending, startTransition] = useTransition();
 
   function switchLocale(newLocale: 'en' | 'bn') {
     if (newLocale === locale) return;
 
-    // Save to cookie
+    // 1. Update next-intl cookie
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
 
-    // Refresh to re-render with new locale
+    // 2. Update custom langStore (so category.name[lang], useMessages work)
+    setLang(newLocale);
+
+    // 3. Refresh to re-render server components
     startTransition(() => {
       router.refresh();
     });
