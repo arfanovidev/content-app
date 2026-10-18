@@ -13,66 +13,51 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { showSuccess } from '@/lib/toast';
 
 const AMOUNTS = [
-  { value: 100, label: '৳100', desc: 'One cup of tea' },
-  { value: 500, label: '৳500', desc: 'A small boost' },
-  { value: 1000, label: '৳1,000', desc: 'Keep us running' },
-  { value: 5000, label: '৳5,000', desc: 'Sponsor a month' },
+  { value: 100, label: '৳100', descKey: 'tea' },
+  { value: 500, label: '৳500', descKey: 'boost' },
+  { value: 1000, label: '৳1,000', descKey: 'running' },
+  { value: 5000, label: '৳5,000', descKey: 'sponsor' },
 ];
 
 const CONTACTS = [
   {
     icon: Phone,
-    label: 'Call or WhatsApp',
+    labelKey: 'call',
     value: '+880 1700-000000',
     href: 'tel:+8801700000000',
-    hint: 'Available 10am – 10pm',
+    hintKey: 'callHint',
   },
   {
     icon: Mail,
-    label: 'Email',
+    labelKey: 'email',
     value: 'donate@daccasolution.com',
     href: 'mailto:donate@daccasolution.com',
-    hint: 'Response within 24 hours',
+    hintKey: 'emailHint',
   },
   {
     icon: MessageCircle,
-    label: 'WhatsApp',
+    labelKey: 'whatsapp',
     value: '+880 1700-000000',
     href: 'https://wa.me/8801700000000',
-    hint: 'Fastest reply',
+    hintKey: 'whatsappHint',
   },
 ];
 
-const FAQ = [
-  {
-    q: 'How do I donate?',
-    a: 'Contact us by phone, email, or WhatsApp. We will share bKash / Nagad / Rocket / bank details and confirm your donation personally.',
-  },
-  {
-    q: 'Is there an online payment option?',
-    a: 'No — we handle donations manually to keep things simple and secure. You will get a direct confirmation from our team.',
-  },
-  {
-    q: 'Will my donation be used transparently?',
-    a: 'Yes. Every taka goes toward hosting, development, and content. We share a brief impact summary with every donor.',
-  },
-  {
-    q: 'Can I donate anonymously?',
-    a: 'Absolutely. Just tell us when you reach out — we will respect your privacy.',
-  },
-];
+const FAQ_KEYS = ['1', '2', '3', '4'];
 
 export default function DonatePage() {
   const [copied, setCopied] = useState<string | null>(null);
+  const t = useTranslations('donate');
 
   const handleCopy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(text);
-      showSuccess('Copied!', text);
+      showSuccess(t('copied'), text);
       setTimeout(() => setCopied(null), 2000);
     } catch {
       // ignore
@@ -89,7 +74,7 @@ export default function DonatePage() {
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to home
+            {t('backToHome')}
           </Link>
 
           <div className="mt-8 text-center">
@@ -98,20 +83,16 @@ export default function DonatePage() {
             </div>
 
             <h1 className="mt-6 text-balance text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-              Support{' '}
-              <span className="bg-gradient-to-r from-rose-600 to-amber-600 bg-clip-text text-transparent">
-                Content App
-              </span>
+              {t('heroTitle')}
             </h1>
 
             <p className="mx-auto mt-4 max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
-              Your contribution keeps independent stories alive — no ads, no
-              paywalls, no tracking. Just good writing.
+              {t('heroSubtitle')}
             </p>
 
             <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-rose-200 bg-white/80 px-4 py-1.5 text-xs font-medium text-rose-700 backdrop-blur-sm dark:border-rose-900 dark:bg-zinc-900/80 dark:text-rose-300">
               <Sparkles className="h-3.5 w-3.5" />
-              No online payment — just a friendly contact
+              {t('heroBadge')}
             </div>
           </div>
         </div>
@@ -121,31 +102,26 @@ export default function DonatePage() {
       <section className="border-b border-border">
         <div className="container mx-auto max-w-4xl px-4 py-16 sm:px-6">
           <h2 className="text-center text-2xl font-bold tracking-tight sm:text-3xl">
-            Where your donation goes
+            {t('whereGoesTitle')}
           </h2>
 
           <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {[
-              {
-                title: 'Hosting & infra',
-                desc: 'Keeping the app fast and always online.',
-              },
-              {
-                title: 'Content & writing',
-                desc: 'Original bilingual stories, editing, and translation.',
-              },
-              {
-                title: 'Development',
-                desc: 'New features, accessibility, and bug fixes.',
-              },
+              { titleKey: 'hostingTitle', descKey: 'hostingDesc' },
+              { titleKey: 'contentTitle', descKey: 'contentDesc' },
+              { titleKey: 'devTitle', descKey: 'devDesc' },
             ].map((item) => (
               <div
-                key={item.title}
+                key={item.titleKey}
                 className="rounded-2xl border border-border bg-card p-6 transition-shadow hover:shadow-md"
               >
                 <Shield className="h-6 w-6 text-rose-500" />
-                <h3 className="mt-3 text-base font-semibold">{item.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{item.desc}</p>
+                <h3 className="mt-3 text-base font-semibold">
+                  {t(`whereGoes.${item.titleKey}`)}
+                </h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {t(`whereGoes.${item.descKey}`)}
+                </p>
               </div>
             ))}
           </div>
@@ -156,10 +132,10 @@ export default function DonatePage() {
       <section className="border-b border-border bg-muted/30">
         <div className="container mx-auto max-w-4xl px-4 py-16 sm:px-6">
           <h2 className="text-center text-2xl font-bold tracking-tight sm:text-3xl">
-            Suggested amounts
+            {t('amountsTitle')}
           </h2>
           <p className="mx-auto mt-2 max-w-md text-center text-sm text-muted-foreground">
-            Any amount helps. These are just starting points.
+            {t('amountsSubtitle')}
           </p>
 
           <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -172,7 +148,7 @@ export default function DonatePage() {
                   {amount.label}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {amount.desc}
+                  {t(`amounts.${amount.descKey}`)}
                 </p>
               </div>
             ))}
@@ -185,12 +161,10 @@ export default function DonatePage() {
         <div className="container mx-auto max-w-4xl px-4 py-16 sm:px-6">
           <div className="text-center">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              How to donate
+              {t('howToTitle')}
             </h2>
             <p className="mx-auto mt-2 max-w-lg text-sm text-muted-foreground">
-              Reach out through any of these channels. We&apos;ll share{' '}
-              <strong className="text-foreground">bKash / Nagad / Rocket</strong>{' '}
-              or bank details and personally confirm your donation.
+              {t('howToSubtitle')}
             </p>
           </div>
 
@@ -199,7 +173,7 @@ export default function DonatePage() {
               const Icon = contact.icon;
               return (
                 <div
-                  key={contact.label}
+                  key={contact.labelKey}
                   className="group rounded-2xl border border-border bg-card p-6 transition-all hover:border-rose-300 hover:shadow-md"
                 >
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400">
@@ -207,7 +181,7 @@ export default function DonatePage() {
                   </div>
 
                   <h3 className="mt-4 text-sm font-semibold">
-                    {contact.label}
+                    {t(`contacts.${contact.labelKey}`)}
                   </h3>
 
                   <div className="mt-1 flex items-center gap-2">
@@ -222,7 +196,7 @@ export default function DonatePage() {
                     <button
                       type="button"
                       onClick={() => handleCopy(contact.value)}
-                      aria-label="Copy"
+                      aria-label={t('copy')}
                       className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                     >
                       {copied === contact.value ? (
@@ -234,7 +208,7 @@ export default function DonatePage() {
                   </div>
 
                   <p className="mt-2 text-xs text-muted-foreground">
-                    {contact.hint}
+                    {t(`contacts.${contact.hintKey}`)}
                   </p>
                 </div>
               );
@@ -246,11 +220,10 @@ export default function DonatePage() {
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-base font-semibold">
-                  Prefer direct bKash / Nagad?
+                  {t('bkashTitle')}
                 </h3>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Send to <strong className="text-foreground">01700-000000</strong>{' '}
-                  (Personal) and WhatsApp us the screenshot.
+                  {t('bkashSubtitle', { number: '01700-000000' })}
                 </p>
               </div>
               <button
@@ -261,12 +234,12 @@ export default function DonatePage() {
                 {copied === '01700000000' ? (
                   <>
                     <Check className="h-4 w-4" />
-                    Copied
+                    {t('copied')}
                   </>
                 ) : (
                   <>
                     <Copy className="h-4 w-4" />
-                    Copy number
+                    {t('copyNumber')}
                   </>
                 )}
               </button>
@@ -279,23 +252,23 @@ export default function DonatePage() {
       <section className="border-b border-border">
         <div className="container mx-auto max-w-3xl px-4 py-16 sm:px-6">
           <h2 className="text-center text-2xl font-bold tracking-tight sm:text-3xl">
-            Frequently asked
+            {t('faqTitle')}
           </h2>
 
           <div className="mt-10 space-y-3">
-            {FAQ.map((item) => (
+            {FAQ_KEYS.map((k) => (
               <details
-                key={item.q}
+                key={k}
                 className="group rounded-xl border border-border bg-card p-4 transition-colors hover:border-rose-300"
               >
                 <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-medium text-foreground">
-                  {item.q}
+                  {t(`faq.q${k}`)}
                   <span className="text-muted-foreground transition-transform group-open:rotate-180">
                     ▾
                   </span>
                 </summary>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {item.a}
+                  {t(`faq.a${k}`)}
                 </p>
               </details>
             ))}
@@ -311,10 +284,10 @@ export default function DonatePage() {
             strokeWidth={2}
           />
           <h2 className="mt-4 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-            Thank you for being here.
+            {t('thanksTitle')}
           </h2>
           <p className="mx-auto mt-2 max-w-md text-sm text-white/90">
-            Every message, every taka, every share keeps this project alive.
+            {t('thanksSubtitle')}
           </p>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -325,14 +298,14 @@ export default function DonatePage() {
               className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-6 text-sm font-medium text-rose-600 transition-colors hover:bg-zinc-50"
             >
               <MessageCircle className="h-4 w-4" />
-              Message on WhatsApp
+              {t('whatsappButton')}
             </a>
             <a
               href="mailto:donate@daccasolution.com"
               className="inline-flex h-11 items-center gap-2 rounded-full border border-white/40 bg-white/10 px-6 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
             >
               <Mail className="h-4 w-4" />
-              Email us
+              {t('emailButton')}
             </a>
           </div>
         </div>

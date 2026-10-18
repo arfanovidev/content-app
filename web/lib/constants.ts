@@ -1,4 +1,4 @@
-﻿export const API_BASE_URL =
+export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
 export const API_ENDPOINTS = {
@@ -46,5 +46,5 @@ export const STORAGE_KEYS = {
   USER_KEY: 'user-store',
   LANG: 'lang-store',
   THEME: 'theme',
-  AUTH: 'auth-store',
+  AUTH: 'auth-store-v2', // matches store/authStore.ts persist name
 } as const;

@@ -19,27 +19,43 @@ export function ContentProtection() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // ✅ Skip everything on admin routes
+    // Skip everything on admin routes
     if (pathname?.startsWith('/admin')) return;
 
+    // Safely check if target/event is editable
     const isEditable = (el: EventTarget | null): boolean => {
-      const node = el as HTMLElement | null;
-      if (!node) return false;
+      if (!el) return false;
 
+      // If it's a Node, walk up from its element (handles text nodes)
+      let element: Element | null = null;
+      if (el instanceof Element) {
+        element = el;
+      } else if (el instanceof Node) {
+        element = el.parentElement;
+      }
+
+      if (!element) return false;
+
+      // Direct element check
+      const tag = element.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return true;
+
+      // isContentEditable check (safe — only on HTMLElement)
       if (
-        node.tagName === 'INPUT' ||
-        node.tagName === 'TEXTAREA' ||
-        node.isContentEditable
+        element instanceof HTMLElement &&
+        element.isContentEditable
       ) {
         return true;
       }
 
-      let parent = node.parentElement;
+      // Walk up ancestors for data-allow-copy / contenteditable
+      let parent: Element | null = element.parentElement;
       while (parent) {
+        const ptag = parent.tagName;
         if (
-          parent.tagName === 'INPUT' ||
-          parent.tagName === 'TEXTAREA' ||
-          parent.isContentEditable ||
+          ptag === 'INPUT' ||
+          ptag === 'TEXTAREA' ||
+          (parent instanceof HTMLElement && parent.isContentEditable) ||
           parent.hasAttribute('data-allow-copy')
         ) {
           return true;
@@ -47,7 +63,8 @@ export function ContentProtection() {
         parent = parent.parentElement;
       }
 
-      if (node.closest('[data-allow-copy]')) return true;
+      // Final check on element itself
+      if (element.closest('[data-allow-copy]')) return true;
       return false;
     };
 
@@ -55,57 +72,76 @@ export function ContentProtection() {
       if (isEditable(e.target)) return;
       e.preventDefault();
     };
+
     const onCopy = (e: ClipboardEvent) => {
       if (isEditable(e.target)) return;
       e.preventDefault();
     };
+
     const onCut = (e: ClipboardEvent) => {
       if (isEditable(e.target)) return;
       e.preventDefault();
     };
+
     const onDragStart = (e: DragEvent) => {
       if (isEditable(e.target)) return;
       e.preventDefault();
     };
+
     const onSelectStart = (e: Event) => {
       if (isEditable(e.target)) return;
       e.preventDefault();
     };
 
     const onKeyDown = (e: KeyboardEvent) => {
-      const k = e.key.toLowerCase();
-      if (e.key === 'F12') {
+      // Guard: some keyboard events (extensions, IME, media keys) lack `key`
+      const rawKey = e.key;
+      if (typeof rawKey !== 'string' || rawKey.length === 0) return;
+      const k = rawKey.toLowerCase();
+
+      // F12 — DevTools
+      if (rawKey === 'F12') {
         e.preventDefault();
         e.stopPropagation();
-        return false;
+        return;
       }
+
+      // Ctrl+Shift+I / J / C — DevTools panels
       if (e.ctrlKey && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')) {
         e.preventDefault();
         e.stopPropagation();
-        return false;
+        return;
       }
+
+      // Ctrl+U (view source) / Ctrl+S (save) / Ctrl+P (print)
       if (e.ctrlKey && (k === 'u' || k === 's' || k === 'p')) {
         e.preventDefault();
         e.stopPropagation();
-        return false;
+        return;
       }
+
+      // Cmd+Alt+I / J / C — macOS DevTools
       if (e.metaKey && e.altKey && (k === 'i' || k === 'j' || k === 'c')) {
         e.preventDefault();
         e.stopPropagation();
-        return false;
+        return;
       }
+
+      // Cmd+U / S / P — macOS
       if (e.metaKey && (k === 'u' || k === 's' || k === 'p')) {
         e.preventDefault();
         e.stopPropagation();
-        return false;
+        return;
       }
     };
 
+    // Suppress window.print() from JS
     const originalPrint = window.print;
     window.print = () => {
       /* no-op */
     };
 
+    // Basic devtools-open heuristic
     let devtoolsOpen = false;
     const threshold = 160;
     const checkDevtools = () => {

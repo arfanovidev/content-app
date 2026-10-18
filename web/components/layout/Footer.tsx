@@ -1,24 +1,28 @@
 'use client';
 
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { GravityAnimation } from './GravityAnimation';
 import { ScienceWordAnimation } from './ScienceWordAnimation';
 
 const LINKS = [
-  { label: 'Help', href: '/help' },
-  { label: 'Status', href: '/status' },
-  { label: 'About', href: '/about' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'Press', href: '/press' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Store', href: '/store' },
-  { label: 'Privacy', href: '/privacy' },
-  { label: 'Rules', href: '/rules' },
-  { label: 'Terms', href: '/terms' },
-  { label: 'Text to speech', href: '/text-to-speech' },
+  { key: 'help', href: '/help' },
+  { key: 'status', href: '/status' },
+  { key: 'about', href: '/about' },
+  { key: 'careers', href: '/careers' },
+  { key: 'press', href: '/press' },
+  { key: 'blog', href: '/blog' },
+  { key: 'store', href: '/store' },
+  { key: 'privacy', href: '/privacy' },
+  { key: 'rules', href: '/rules' },
+  { key: 'terms', href: '/terms' },
+  { key: 'textToSpeech', href: '/text-to-speech' },
 ];
 
 export function Footer() {
+  const t = useTranslations('footer');
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="border-t border-border bg-background">
       <div className="container mx-auto max-w-6xl px-4 py-8 sm:px-6">
@@ -32,12 +36,12 @@ export function Footer() {
           {/* Center: Footer links */}
           <ul className="flex flex-1 flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
             {LINKS.map((link) => (
-              <li key={link.label}>
+              <li key={link.key}>
                 <Link
                   href={link.href}
                   className="transition-colors hover:text-foreground hover:underline"
                 >
-                  {link.label}
+                  {t(link.key)}
                 </Link>
               </li>
             ))}
@@ -73,9 +77,9 @@ export function Footer() {
             </span>
           </a>
 
-          {/* Right side: subtle text */}
+          {/* Right side: copyright */}
           <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50">
-            © {new Date().getFullYear()}
+            {t('copyright', { year: currentYear })}
           </p>
         </div>
       </div>
