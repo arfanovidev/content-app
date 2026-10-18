@@ -33,7 +33,7 @@ export default function ContentPage({ params }: PageProps) {
   const imageUrl = normalizeImageUrl(content.coverImage);
 
   return (
-    <article className="mx-auto w-full max-w-3xl overflow-x-hidden px-4 py-5 sm:px-6 sm:py-6">
+    <article className="mx-auto w-full max-w-3xl overflow-x-hidden px-4 pb-12 pt-4 sm:px-6 sm:py-6">
       <div className="mb-5">
         <BackButton />
       </div>

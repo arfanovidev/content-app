@@ -19,13 +19,13 @@ export function useTTS({ text, lang }: UseTTSOptions) {
   const [status, setStatus] = useState<TTSStatus>('idle');
   const [activeWordIndex, setActiveWordIndex] = useState(-1);
   const [supported, setSupported] = useState(false);
-  const [voicesReady, setVoicesReady] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const wordsRef = useRef<string[]>([]);
 
-  // Check support + load voices
+  // Check support + pre-load voices on mount (helps iOS)
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const isSupported = isSpeechSupported();
@@ -33,15 +33,10 @@ export function useTTS({ text, lang }: UseTTSOptions) {
     if (!isSupported) return;
 
     const loadVoices = () => {
-      const voices = window.speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        setVoicesReady(true);
-      }
+      window.speechSynthesis.getVoices();
     };
 
-    // Try immediately
     loadVoices();
-    // Also listen for async load (mobile browsers)
     window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
 
     return () => {
@@ -63,6 +58,7 @@ export function useTTS({ text, lang }: UseTTSOptions) {
     }
     setStatus('idle');
     setActiveWordIndex(-1);
+    setError(null);
   }, [clearTimer]);
 
   useEffect(() => {
@@ -77,6 +73,7 @@ export function useTTS({ text, lang }: UseTTSOptions) {
   const play = useCallback(() => {
     if (!supported || !text) return;
 
+    setError(null);
     clearTimer();
     if (typeof window !== 'undefined') {
       window.speechSynthesis.cancel();
@@ -86,7 +83,6 @@ export function useTTS({ text, lang }: UseTTSOptions) {
     wordsRef.current = words;
 
     const utterance = new SpeechSynthesisUtterance(text);
-    // Retry voice pick if voices just became available
     const voice = pickVoice(lang);
     if (voice) utterance.voice = voice;
     utterance.lang = lang === 'bn' ? 'bn-BD' : 'en-US';
@@ -114,7 +110,11 @@ export function useTTS({ text, lang }: UseTTSOptions) {
       stop();
     };
 
-    utterance.onerror = () => {
+    utterance.onerror = (e) => {
+      // iOS sometimes fires error with 'canceled' when user stops
+      if (e.error !== 'canceled' && e.error !== 'interrupted') {
+        setError(`Audio error: ${e.error}`);
+      }
       stop();
     };
 
@@ -122,10 +122,15 @@ export function useTTS({ text, lang }: UseTTSOptions) {
     setStatus('playing');
     setActiveWordIndex(0);
 
-    // Critical for mobile: speak after small delay to allow voices to load
-    setTimeout(() => {
+    // CRITICAL: speak() must be called SYNCHRONOUSLY (no setTimeout)
+    // iOS Safari blocks speech if not triggered directly in click handler
+    try {
       window.speechSynthesis.speak(utterance);
-    }, voicesReady ? 0 : 100);
+    } catch (e: any) {
+      setError(`Speech error: ${e?.message || 'unknown'}`);
+      stop();
+      return;
+    }
 
     const interval = msPerWord(lang);
     timerRef.current = setInterval(() => {
@@ -135,11 +140,10 @@ export function useTTS({ text, lang }: UseTTSOptions) {
         setActiveWordIndex(idx);
       }
     }, interval);
-  }, [supported, text, lang, clearTimer, stop, voicesReady]);
+  }, [supported, text, lang, clearTimer, stop]);
 
   const pause = useCallback(() => {
     if (!supported) return;
-
     if (typeof window !== 'undefined') {
       window.speechSynthesis.pause();
     }
@@ -149,7 +153,6 @@ export function useTTS({ text, lang }: UseTTSOptions) {
 
   const resume = useCallback(() => {
     if (!supported) return;
-
     if (typeof window !== 'undefined') {
       window.speechSynthesis.resume();
     }
@@ -160,6 +163,7 @@ export function useTTS({ text, lang }: UseTTSOptions) {
     status,
     activeWordIndex,
     supported,
+    error,
     play,
     pause,
     resume,

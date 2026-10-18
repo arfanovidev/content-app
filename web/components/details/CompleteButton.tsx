@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { CheckCircle2, Loader2 } from 'lucide-react';
+import { CheckCircle2, Loader2, Bookmark } from 'lucide-react';
 import { useMessages } from '@/hooks/useMessages';
 
 interface CompleteButtonProps {
@@ -18,46 +17,42 @@ export function CompleteButton({
   onClick,
 }: CompleteButtonProps) {
   const t = useMessages();
-  const [showSuccess, setShowSuccess] = useState(false);
 
-  useEffect(() => {
-    if (!isCompleted) return;
-    setShowSuccess(true);
-    const timer = setTimeout(() => setShowSuccess(false), 2500);
-    return () => clearTimeout(timer);
-  }, [isCompleted]);
+  if (!visible && !isCompleted) return null;
 
-  if (isCompleted && !showSuccess) {
-    return null;
-  }
-
-  if (isCompleted && showSuccess) {
+  if (isCompleted) {
     return (
-      <div className="flex items-center gap-2 rounded-lg border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm font-medium text-green-700 dark:text-green-400">
-        <CheckCircle2 className="h-5 w-5" strokeWidth={2.5} />
-        <span>{t.reading?.completed || 'Completed! Added to favorites'}</span>
+      <div className="flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-300">
+        <CheckCircle2 className="h-5 w-5" />
+        <span className="text-sm font-medium">
+          {t.details?.completed || 'Completed'}
+        </span>
       </div>
     );
   }
-
-  if (!visible) return null;
 
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={isPending}
-      className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+      style={{
+        minHeight: '52px',
+        minWidth: '100%',
+        touchAction: 'manipulation',
+        WebkitTapHighlightColor: 'transparent',
+      }}
+      className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-md transition-all duration-150 hover:bg-primary/90 hover:shadow-lg active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {isPending ? (
         <>
-          <Loader2 className="h-4 w-4 animate-spin" />
-          {t.reading?.saving || 'Saving...'}
+          <Loader2 className="h-5 w-5 animate-spin" />
+          <span>{t.reading?.saving || 'Saving...'}</span>
         </>
       ) : (
         <>
-          <CheckCircle2 className="h-4 w-4" strokeWidth={2.5} />
-          {t.reading?.complete || 'Mark as Complete'}
+          <Bookmark className="h-5 w-5" />
+          <span>{t.details?.markComplete || 'Mark as Complete'}</span>
         </>
       )}
     </button>

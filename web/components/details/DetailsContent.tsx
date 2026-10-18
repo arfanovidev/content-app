@@ -4,6 +4,7 @@ import { useLocale } from 'next-intl';
 import { useReadingTimer } from '@/hooks/useReadingTimer';
 import { useCompleteContent } from '@/hooks/useCompleteContent';
 import { useCompletedStore } from '@/store/completedStore';
+import { useAuthStore } from '@/store/authStore';
 import { ContentRenderer } from './ContentRenderer';
 import { CompleteButton } from './CompleteButton';
 import { pickText } from '@/lib/format';
@@ -16,18 +17,22 @@ interface DetailsContentProps {
 export function DetailsContent({ content }: DetailsContentProps) {
   const locale = useLocale() as 'en' | 'bn';
   const isCompleted = useCompletedStore((s) => s.isCompleted(content.id));
+  const isAuth = useAuthStore((s) => s.isAuthenticated());
 
   const timer = useReadingTimer(content.id, content.readTime);
   const completeMutation = useCompleteContent();
 
   const handleComplete = () => {
+    if (!isAuth) {
+      // Optionally show login modal
+      return;
+    }
     completeMutation.mutate({
       contentId: content.id,
       readDuration: timer.elapsed,
     });
   };
 
-  // Pick delta by UI language with fallback chain
   const delta =
     locale === 'bn'
       ? content.quillDeltaBn || content.quillDeltaEn || content.quillDelta
@@ -39,7 +44,7 @@ export function DetailsContent({ content }: DetailsContentProps) {
   const fallbackText = pickText(content.shortDescription, locale);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 pb-8">
       {hasDelta ? (
         <ContentRenderer delta={delta} />
       ) : fallbackText ? (
@@ -52,12 +57,15 @@ export function DetailsContent({ content }: DetailsContentProps) {
         </p>
       )}
 
-      <CompleteButton
-        visible={timer.canComplete}
-        isCompleted={isCompleted}
-        isPending={completeMutation.isPending}
-        onClick={handleComplete}
-      />
+      {/* Complete button — extra spacing so it's always reachable */}
+      <div className="pt-6 pb-8">
+        <CompleteButton
+          visible={timer.canComplete}
+          isCompleted={isCompleted}
+          isPending={completeMutation.isPending}
+          onClick={handleComplete}
+        />
+      </div>
     </div>
   );
 }
