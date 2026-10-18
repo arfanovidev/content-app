@@ -33,7 +33,7 @@ export default function ContentPage({ params }: PageProps) {
   const imageUrl = normalizeImageUrl(content.coverImage);
 
   return (
-    <article className="container mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-6">
+    <article className="mx-auto w-full max-w-3xl overflow-x-hidden px-4 py-5 sm:px-6 sm:py-6">
       <div className="mb-5">
         <BackButton />
       </div>
@@ -41,7 +41,7 @@ export default function ContentPage({ params }: PageProps) {
       <DetailsHeader content={content} category={category} />
 
       {imageUrl && (
-        <div className="relative mt-6 aspect-video overflow-hidden rounded-xl border border-border bg-muted">
+        <div className="relative mt-6 aspect-video w-full overflow-hidden rounded-xl border border-border bg-muted">
           <Image
             src={imageUrl}
             alt={title}
@@ -55,7 +55,7 @@ export default function ContentPage({ params }: PageProps) {
 
       <AudioBar content={content} />
 
-      <div className="mt-6">
+      <div className="mt-6 overflow-x-hidden">
         <DetailsContent content={content} />
       </div>
 

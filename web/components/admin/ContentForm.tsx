@@ -269,6 +269,7 @@ export function ContentForm({ initialData, mode }: ContentFormProps) {
       await deleteMutation.mutateAsync(initialData.id);
       showSuccess('Content deleted', 'The content has been permanently removed.');
       router.push('/admin/content');
+      router.refresh();
     } catch (e: any) {
       const msg = e?.message || 'Delete failed';
       setError(msg);
@@ -327,6 +328,7 @@ export function ContentForm({ initialData, mode }: ContentFormProps) {
         showSuccess('Changes saved', 'Your updates have been published.');
       }
       router.push('/admin/content');
+      router.refresh();
     } catch (e: any) {
       const msg = e?.message || 'Save failed';
       setError(msg);

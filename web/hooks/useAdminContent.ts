@@ -26,7 +26,9 @@ export function useCreateContent() {
       return res.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['contents'] });
+      // Invalidate ALL contents queries (any category filter)
+      queryClient.invalidateQueries({ queryKey: ['contents'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['contents'], exact: false });
     },
   });
 }
@@ -43,8 +45,9 @@ export function useUpdateContent(id: string) {
       return res.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['contents'] });
-      queryClient.invalidateQueries({ queryKey: ['content'] });
+      queryClient.invalidateQueries({ queryKey: ['contents'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['content'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['contents'], exact: false });
     },
   });
 }
@@ -58,7 +61,8 @@ export function useDeleteContent() {
       return res.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['contents'] });
+      queryClient.invalidateQueries({ queryKey: ['contents'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['contents'], exact: false });
     },
   });
 }
@@ -78,7 +82,8 @@ export function useCreateCategory() {
       return res.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['categories'], exact: false });
     },
   });
 }
@@ -88,17 +93,16 @@ export function useDeleteCategory() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const res = await api.delete(
-        `${API_ENDPOINTS.CATEGORIES}/${id}`,
-      );
+      const res = await api.delete(`${API_ENDPOINTS.CATEGORIES}/${id}`);
       return res.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'], exact: false });
+      queryClient.refetchQueries({ queryKey: ['categories'], exact: false });
     },
   });
 }
-/* ---------- Single content fetch (for edit page) ---------- */
+
 export function useContentById(id: string) {
   return useQuery({
     queryKey: ['admin-content', id],

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
@@ -15,6 +15,7 @@ export function useContents(categoryId?: string) {
       const res = await api.get<Content[]>(url);
       return res.data;
     },
-    staleTime: 60 * 1000,
+    staleTime: 30 * 1000,       // 30s — refresh sooner
+    refetchOnWindowFocus: true, // refresh when tab regains focus
   });
 }

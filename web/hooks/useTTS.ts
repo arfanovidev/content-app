@@ -19,13 +19,34 @@ export function useTTS({ text, lang }: UseTTSOptions) {
   const [status, setStatus] = useState<TTSStatus>('idle');
   const [activeWordIndex, setActiveWordIndex] = useState(-1);
   const [supported, setSupported] = useState(false);
+  const [voicesReady, setVoicesReady] = useState(false);
 
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const wordsRef = useRef<string[]>([]);
 
+  // Check support + load voices
   useEffect(() => {
-    setSupported(isSpeechSupported());
+    if (typeof window === 'undefined') return;
+    const isSupported = isSpeechSupported();
+    setSupported(isSupported);
+    if (!isSupported) return;
+
+    const loadVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        setVoicesReady(true);
+      }
+    };
+
+    // Try immediately
+    loadVoices();
+    // Also listen for async load (mobile browsers)
+    window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
+
+    return () => {
+      window.speechSynthesis.removeEventListener('voiceschanged', loadVoices);
+    };
   }, []);
 
   const clearTimer = useCallback(() => {
@@ -65,11 +86,13 @@ export function useTTS({ text, lang }: UseTTSOptions) {
     wordsRef.current = words;
 
     const utterance = new SpeechSynthesisUtterance(text);
+    // Retry voice pick if voices just became available
     const voice = pickVoice(lang);
     if (voice) utterance.voice = voice;
     utterance.lang = lang === 'bn' ? 'bn-BD' : 'en-US';
     utterance.rate = 0.95;
     utterance.pitch = 1;
+    utterance.volume = 1;
 
     let idx = 0;
     let usingBoundary = false;
@@ -99,7 +122,10 @@ export function useTTS({ text, lang }: UseTTSOptions) {
     setStatus('playing');
     setActiveWordIndex(0);
 
-    window.speechSynthesis.speak(utterance);
+    // Critical for mobile: speak after small delay to allow voices to load
+    setTimeout(() => {
+      window.speechSynthesis.speak(utterance);
+    }, voicesReady ? 0 : 100);
 
     const interval = msPerWord(lang);
     timerRef.current = setInterval(() => {
@@ -109,7 +135,7 @@ export function useTTS({ text, lang }: UseTTSOptions) {
         setActiveWordIndex(idx);
       }
     }, interval);
-  }, [supported, text, lang, clearTimer, stop]);
+  }, [supported, text, lang, clearTimer, stop, voicesReady]);
 
   const pause = useCallback(() => {
     if (!supported) return;
@@ -125,7 +151,6 @@ export function useTTS({ text, lang }: UseTTSOptions) {
     if (!supported) return;
 
     if (typeof window !== 'undefined') {
-      // Workaround: Chrome speechSynthesis.resume() sometimes doesn't fire
       window.speechSynthesis.resume();
     }
     setStatus('playing');

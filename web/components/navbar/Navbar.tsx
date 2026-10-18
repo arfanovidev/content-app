@@ -30,9 +30,9 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-2 px-3 sm:h-16 sm:gap-4 sm:px-6 lg:px-8">
         {/* LEFT: Logo + desktop nav */}
-        <div className="flex items-center gap-8">
+        <div className="flex min-w-0 items-center gap-6 sm:gap-8">
           <Logo />
 
           <nav className="hidden items-center gap-1 md:flex">
@@ -53,7 +53,7 @@ export function Navbar() {
                 >
                   {t(link.key)}
                   {active && (
-                    <span className="absolute inset-x-3 -bottom-[19px] h-0.5 rounded-full bg-primary" />
+                    <span className="absolute inset-x-3 -bottom-[17px] h-0.5 rounded-full bg-primary" />
                   )}
                 </Link>
               );
@@ -62,9 +62,14 @@ export function Navbar() {
         </div>
 
         {/* RIGHT: Action icons */}
-        <div className="flex items-center gap-0.5 sm:gap-1">
-          <WeatherWidget />
-          {isAuth && <FavoritesLink />}
+        <div className="flex shrink-0 items-center gap-0.5 sm:gap-1">
+          {/* Desktop-only icons */}
+          <div className="hidden items-center gap-1 md:flex">
+            <WeatherWidget />
+            {isAuth && <FavoritesLink />}
+          </div>
+
+          {/* Always-visible icons (mobile + desktop) */}
           {showLangToggle && <LangToggle />}
           <LanguageSwitcher />
           <DarkModeToggle />
@@ -75,7 +80,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={openSignup}
-              className="ml-1 hidden h-9 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-all duration-150 hover:bg-primary/90 hover:shadow-md active:scale-95 sm:inline-flex"
+              className="ml-1 hidden h-9 items-center rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-all duration-150 hover:bg-primary/90 hover:shadow-md active:scale-95 sm:inline-flex"
             >
               {t('signUp')}
             </button>
